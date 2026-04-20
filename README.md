@@ -18,8 +18,8 @@ Calvin Rull Jr.
 ## General Goals for each person
 
 #### Justin Aguiluz
-* a
-* b
+* Player input
+* UI
 * c
 
 #### Deeni Baez
