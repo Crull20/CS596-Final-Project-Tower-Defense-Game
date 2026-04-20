@@ -28,9 +28,9 @@ Calvin Rull Jr.
 * c
 
 #### Wyatt Cosby
-* a
-* b
-* c
+* Enemy Spawn Logic
+* Enemy Pathing Logic
+* Assistance in overall Enemy Behaviour
 
 #### Rodrigo Mendoza
 * a
