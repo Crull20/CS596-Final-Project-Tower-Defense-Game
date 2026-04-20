@@ -1,5 +1,5 @@
-# Final Project
-San Diego State University CS 596 Advanced 3D Game Programming 
+# San Diego State University CS 596 Advanced 3D Game Programming 
+## Final Project
 
 ## *TOWER DEFENSE GAME NAME PLACEHOLDER*
 Description of game
