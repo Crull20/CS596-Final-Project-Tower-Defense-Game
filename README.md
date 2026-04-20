@@ -7,17 +7,17 @@ Description of game
 <br />
 <br />
 ## Group Members
-Justin Aguiluz
-Deeni Baez
-Wyatt Cosby
-Rodrigo Mendoza
-Calvin Rull Jr.
+Justin Aguiluz  
+Deeni Baez  
+Wyatt Cosby  
+Rodrigo Mendoza  
+Calvin Rull Jr.  
 <br />
 <br />
 ## Game Description
-The goal is to create a 3D tower defense game built for mobile devices. Our group aims to put create a unique spin on the tower defense formula by adding a playable character that interacts with the environment. Instead of having the player create towers anywhere throughout the map, the player places towers down through their movable character on the map. Furthermore, this playable character is also able to attack the units themselves. This creates a challenging aspect to the game that keeps the player more engaged as the players are spending less time watching their units fight for them and more time controlling their character during the round. 
+The goal is to create a 3D tower defense game built for mobile devices. Our group aims to put create a unique spin on the tower defense formula by adding a playable character that interacts with the environment. Instead of having the player create towers anywhere throughout the map, the player places towers down through their movable character on the map. Furthermore, this playable character is also able to attack the units themselves. This creates a challenging aspect to the game that keeps the player more engaged as the players are spending less time watching their units fight for them and more time controlling their character during the round.   
 
-We aim to implement many of the elements learned throughout the semester within the final project, particularly the ones learned from the mobile game project. We aim to have multiple implementations of touch input especially since the player is not only placing and managing their towers but also controlling their own character. We would like to work on a variety of enemies to add on to our "X factor" but that would require further planning due to time limitations.
+We aim to implement many of the elements learned throughout the semester within the final project, particularly the ones learned from the mobile game project. We aim to have multiple implementations of touch input especially since the player is not only placing and managing their towers but also controlling their own character. We would like to work on a variety of enemies to add on to our "X factor" but that would require further planning due to time limitations.  
 <br />
 <br />
 ## General Goals for each person
