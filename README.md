@@ -3,7 +3,7 @@ Final Project
 < br / >
 ## *TOWER DEFENSE GAME NAME PLACEHOLDER*
 Description of game
-< br / >
+<br />
 
 ## Group Members
 Justin Aguiluz
