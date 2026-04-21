@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -12,9 +13,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float rotationSpeed = 12f;
     [SerializeField] private Transform graphics;
 
-    [Header("Camera")]
+    [Header("Camera")] 
+    [SerializeField] private CinemachineOrbitalFollow followCamera;
     [SerializeField] private Transform cameraPole;
-    [SerializeField] private Transform followCamera;
+    //[SerializeField] private Transform followCamera;
     [SerializeField] private LayerMask cameraObstacleLayers;
     [SerializeField] private float cameraYawSensitivity = 0.15f;
     [SerializeField] private float minCameraDistance = 3f;
@@ -27,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector2 lookInput;
     private Vector3 moveDirection;
+    private Vector2 yawV;
 
     private float yaw;
     private float currentCameraDistance = 6f;
@@ -41,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
     {
         halfScreenWidth = Screen.width * 0.5f;
         yaw = transform.eulerAngles.y;
+        yawV = Vector2.zero;
         currentCameraDistance = Mathf.Clamp(currentCameraDistance, minCameraDistance, maxCameraDistance);
     }
 
@@ -48,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
     {
         HandleTouchInput();
         HandleCameraRotation();
-        HandlePinchZoom();
+        //HandlePinchZoom();
         HandleMovementInput();
     }
 
@@ -60,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void LateUpdate()
     {
-        UpdateCameraPosition();
+        //UpdateCameraPosition();
     }
 
     private void HandleTouchInput()
@@ -120,9 +124,14 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         yaw += lookInput.x;
+        yawV.x += lookInput.x;
+        yawV.y += lookInput.y;
 
-        if (cameraPole != null)
-            cameraPole.rotation = Quaternion.Euler(0f, yaw, 0f);
+        if (followCamera != null)
+        {
+            followCamera.HorizontalAxis.Value = yawV.x;
+            followCamera.VerticalAxis.Value = yawV.y;
+        }
     }
 
     private void HandlePinchZoom()
@@ -216,13 +225,13 @@ public class PlayerMovement : MonoBehaviour
 
         if (Physics.Raycast(origin, direction.normalized, out RaycastHit hit, distance, cameraObstacleLayers, QueryTriggerInteraction.Ignore))
         {
-            followCamera.position = hit.point - direction.normalized * 0.2f;
+            //followCamera.position = hit.point - direction.normalized * 0.2f;
         }
         else
         {
-            followCamera.position = desiredPosition;
+            //followCamera.position = desiredPosition;
         }
 
-        followCamera.LookAt(cameraPole.position + Vector3.up * cameraHeight);
+        //followCamera.LookAt(cameraPole.position + Vector3.up * cameraHeight);
     }
 }
