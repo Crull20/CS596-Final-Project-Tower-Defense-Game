@@ -41,9 +41,6 @@ public class FloatingJoystickUI : MonoBehaviour
 
     public bool TryBegin(Touch touch, float halfScreenWidth)
     {
-        if (IsHeld) return false;
-        if (touch.position.x >= halfScreenWidth) return false;
-
         activeFingerId = touch.fingerId;
         gameObject.SetActive(true);
 
