@@ -21,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float maxCameraDistance = 8f;
     [SerializeField] private float zoomSpeed = 0.01f;
     [SerializeField] private float cameraHeight = 4f;
+    [SerializeField] private float lookTargetHeight = 1.5f;
+    [SerializeField] private float cameraPitch = 40f;
 
     private int rightFingerId = -1;
     private float halfScreenWidth;
@@ -205,16 +207,15 @@ public class PlayerMovement : MonoBehaviour
         if (cameraPole == null || followCamera == null)
             return;
 
-        Vector3 backward = -cameraPole.forward;
-        backward.y = 0f;
-        backward.Normalize();
+        Vector3 target = cameraPole.position + Vector3.up * lookTargetHeight;
 
-        Vector3 desiredPosition = cameraPole.position + Vector3.up * cameraHeight + backward * currentCameraDistance;
-        Vector3 origin = cameraPole.position + Vector3.up * cameraHeight;
-        Vector3 direction = desiredPosition - origin;
+        Quaternion orbitRotation = Quaternion.Euler(cameraPitch, yaw, 0f);
+        Vector3 desiredPosition = target + orbitRotation * new Vector3(0f, 0f, -currentCameraDistance);
+
+        Vector3 direction = desiredPosition - target;
         float distance = direction.magnitude;
 
-        if (Physics.Raycast(origin, direction.normalized, out RaycastHit hit, distance, cameraObstacleLayers, QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(target, direction.normalized, out RaycastHit hit, distance, cameraObstacleLayers, QueryTriggerInteraction.Ignore))
         {
             followCamera.position = hit.point - direction.normalized * 0.2f;
         }
@@ -223,6 +224,6 @@ public class PlayerMovement : MonoBehaviour
             followCamera.position = desiredPosition;
         }
 
-        followCamera.LookAt(cameraPole.position + Vector3.up * cameraHeight);
+        followCamera.LookAt(target);
     }
 }
