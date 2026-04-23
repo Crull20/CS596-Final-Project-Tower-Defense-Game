@@ -21,25 +21,26 @@ Calvin Rull Jr.
 * Player input
 * UI
 
-#### Deeni Baez
-* a
-* b
-* c
-
 #### Wyatt Cosby
 * Enemy Spawn Logic
 * Enemy Pathing Logic
 * Assistance in overall Enemy Behaviour
 
-#### Rodrigo Mendoza
-* a
-* b
-* c
-
 #### Calvin Rull
 * Tower Assets & Animations
 * Map Design and Art
 * Tower Attacks and Behavior
+
+#### Deeni Baez
+* a
+* b
+* c
+
+#### Rodrigo Mendoza
+* a
+* b
+* c  
+
 <br />
 
 ## Areas for Concern  
