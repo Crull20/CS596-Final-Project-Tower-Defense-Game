@@ -1,0 +1,49 @@
+using UnityEngine;
+
+/*
+This class represents an enemy in the game. It moves along a predefined path by following a series of 
+pathing points.
+*/
+
+public class Enemy : MonoBehaviour
+{
+    [SerializeField] private float speed = 3f;
+    public Path currentPath;
+    private Vector3 targetPosition;
+    private int currentPathingPointIndex = 0;
+    private void OnEnable()
+    {
+        //reset the pathing point index to 0 when the enemy is enabled
+        currentPathingPointIndex = 0;
+        //set the target position to the position of the first pathing point
+        if (currentPath != null)
+            targetPosition = currentPath.GetPosition(currentPathingPointIndex);
+    }
+    void Update()
+    {
+        if (currentPath == null) return;
+        //move towards the position of the target
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+
+        //check if the enemy has reached the target position, set the target position to the next pathing point if it has
+        float relativeDistance = (transform.position - targetPosition).magnitude;
+        //if the enemy is within 0.1 units of the target position, consider it reached
+        if (relativeDistance < 0.1f)
+        {
+            //if there are more pathing points, move to the next one
+            if (currentPathingPointIndex < currentPath.Pathingpoints.Length - 1)
+            {
+                //increment the pathing point index and set the target position to the next pathing point
+                currentPathingPointIndex++;
+                targetPosition = currentPath.GetPosition(currentPathingPointIndex);
+            }
+            else
+            {
+                //if there are no more pathing points, the enemy has reached the end of the path
+                //deactivate the enemy game object to return it to the pool
+                gameObject.SetActive(false);
+            }
+
+        }
+    }
+}
