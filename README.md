@@ -1,4 +1,4 @@
-# Final Project
+# Final Project - SIEGE
 San Diego State University CS 596 Advanced 3D Game Programming 
 <br />
 ## *SIEGE*
