@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using Mono.Cecil;
 using NUnit.Framework.Constraints;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
@@ -30,7 +29,7 @@ public class InputHandler : MonoBehaviour
         Gesture
     }
 
-    void Awake()
+    void Start()
     {
         player = GameObject.Find("Player").GetComponent<PlayerMovement>();
         halfScreenWidth = Screen.width / 2f;
