@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -6,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Rigidbody rb;
-    [SerializeField] private FloatingJoystickUI moveJoystick;
+    [SerializeField] public FloatingJoystickUI moveJoystick;
 
     [Header("Character")]
     [SerializeField] private float moveSpeed = 5f;
@@ -23,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float maxCameraDistance = 8f;
     [SerializeField] private float zoomSpeed = 0.01f;
     [SerializeField] private float cameraHeight = 4f;
-
+    
     private int rightFingerId = -1;
     private float halfScreenWidth;
 
@@ -33,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float yaw;
     private float currentCameraDistance = 6f;
-
+    
     private void Awake()
     {
         if (rb == null)
@@ -43,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         halfScreenWidth = Screen.width * 0.5f;
+        Debug.Log($"halfScreenWidth: {halfScreenWidth}");
         yaw = transform.eulerAngles.y;
         yawV = Vector2.zero;
         currentCameraDistance = Mathf.Clamp(currentCameraDistance, minCameraDistance, maxCameraDistance);
@@ -50,9 +52,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        HandleTouchInput();
-        HandleCameraRotation();
-        //HandlePinchZoom();
+        //HandleTouchInput();
+        //HandleCameraRotation();
+        HandlePinchZoom();
         HandleMovementInput();
     }
 
@@ -64,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void LateUpdate()
     {
-        //UpdateCameraPosition();
+        UpdateCameraPosition();
     }
 
     private void HandleTouchInput()
@@ -118,14 +120,14 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void HandleCameraRotation()
+    public void HandleCameraRotation(Vector2 input)
     {
-        if (Input.touchCount != 1 || rightFingerId == -1)
-            return;
+        // if (Input.touchCount != 1 || rightFingerId == -1)
+        //     return;
 
         yaw += lookInput.x;
-        yawV.x += lookInput.x;
-        yawV.y += lookInput.y;
+        yawV.x += input.x;
+        yawV.y += input.y;
 
         if (followCamera != null)
         {
