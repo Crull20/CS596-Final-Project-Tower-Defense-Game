@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -5,32 +7,34 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Rigidbody rb;
-    [SerializeField] private FloatingJoystickUI moveJoystick;
+    [SerializeField] public FloatingJoystickUI moveJoystick;
 
     [Header("Character")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float rotationSpeed = 12f;
     [SerializeField] private Transform graphics;
 
-    [Header("Camera")]
+    [Header("Camera")] 
+    [SerializeField] private CinemachineOrbitalFollow followCamera;
     [SerializeField] private Transform cameraPole;
-    [SerializeField] private Transform followCamera;
+    //[SerializeField] private Transform followCamera;
     [SerializeField] private LayerMask cameraObstacleLayers;
     [SerializeField] private float cameraYawSensitivity = 0.15f;
     [SerializeField] private float minCameraDistance = 3f;
     [SerializeField] private float maxCameraDistance = 8f;
     [SerializeField] private float zoomSpeed = 0.01f;
     [SerializeField] private float cameraHeight = 4f;
-
+    
     private int rightFingerId = -1;
     private float halfScreenWidth;
 
     private Vector2 lookInput;
     private Vector3 moveDirection;
+    private Vector2 yawV;
 
     private float yaw;
     private float currentCameraDistance = 6f;
-
+    
     private void Awake()
     {
         if (rb == null)
@@ -40,14 +44,16 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         halfScreenWidth = Screen.width * 0.5f;
+        Debug.Log($"halfScreenWidth: {halfScreenWidth}");
         yaw = transform.eulerAngles.y;
+        yawV = Vector2.zero;
         currentCameraDistance = Mathf.Clamp(currentCameraDistance, minCameraDistance, maxCameraDistance);
     }
 
     private void Update()
     {
-        HandleTouchInput();
-        HandleCameraRotation();
+        //HandleTouchInput();
+        //HandleCameraRotation();
         HandlePinchZoom();
         HandleMovementInput();
     }
@@ -114,15 +120,20 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void HandleCameraRotation()
+    public void HandleCameraRotation(Vector2 input)
     {
-        if (Input.touchCount != 1 || rightFingerId == -1)
-            return;
+        // if (Input.touchCount != 1 || rightFingerId == -1)
+        //     return;
 
         yaw += lookInput.x;
+        yawV.x += input.x;
+        yawV.y += input.y;
 
-        if (cameraPole != null)
-            cameraPole.rotation = Quaternion.Euler(0f, yaw, 0f);
+        if (followCamera != null)
+        {
+            followCamera.HorizontalAxis.Value = yawV.x;
+            followCamera.VerticalAxis.Value = yawV.y;
+        }
     }
 
     private void HandlePinchZoom()
@@ -216,13 +227,13 @@ public class PlayerMovement : MonoBehaviour
 
         if (Physics.Raycast(origin, direction.normalized, out RaycastHit hit, distance, cameraObstacleLayers, QueryTriggerInteraction.Ignore))
         {
-            followCamera.position = hit.point - direction.normalized * 0.2f;
+            //followCamera.position = hit.point - direction.normalized * 0.2f;
         }
         else
         {
-            followCamera.position = desiredPosition;
+            //followCamera.position = desiredPosition;
         }
 
-        followCamera.LookAt(cameraPole.position + Vector3.up * cameraHeight);
+        //followCamera.LookAt(cameraPole.position + Vector3.up * cameraHeight);
     }
 }
