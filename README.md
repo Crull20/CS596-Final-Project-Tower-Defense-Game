@@ -9,7 +9,6 @@ We aim to implement many of the elements learned throughout the semester within 
 <br />
 ## Group Members
 Justin Aguiluz  
-Deeni Baez  
 Wyatt Cosby  
 Rodrigo Mendoza  
 Calvin Rull Jr.  
