@@ -9,7 +9,6 @@ We aim to implement many of the elements learned throughout the semester within 
 <br />
 ## Group Members
 Justin Aguiluz  
-Deeni Baez  
 Wyatt Cosby  
 Rodrigo Mendoza  
 Calvin Rull Jr.  
@@ -31,15 +30,9 @@ Calvin Rull Jr.
 * Map Design and Art
 * Tower Attacks and Behavior
 
-#### Deeni Baez
-* a
-* b
-* c
-
 #### Rodrigo Mendoza
-* a
-* b
-* c  
+* Combat system
+* Interaction system
 
 <br />
 
