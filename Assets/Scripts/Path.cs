@@ -1,4 +1,5 @@
 using UnityEngine;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -12,6 +13,7 @@ which visually represent the path and label each pathing point with its name.
 public class Path : MonoBehaviour
 {
     public GameObject[] Pathingpoints;
+
     public Vector3 GetPosition(int index)
     {
         //return the position of the pathing point at the specified index
@@ -21,23 +23,33 @@ public class Path : MonoBehaviour
     #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        if (Pathingpoints.Length > 0)
+        if (Pathingpoints == null || Pathingpoints.Length == 0)
+            return;
+
+        for (int i = 0; i < Pathingpoints.Length; i++)
         {
-            for (int i = 0; i < Pathingpoints.Length; i++)
+            if (Pathingpoints[i] == null)
+                continue;
+
+#if UNITY_EDITOR
+            GUIStyle style = new GUIStyle();
+            style.normal.textColor = Color.white;
+            style.alignment = TextAnchor.MiddleCenter;
+
+            Handles.Label(
+                Pathingpoints[i].transform.position + Vector3.up * 1.5f,
+                Pathingpoints[i].name,
+                style
+            );
+#endif
+
+            if (i < Pathingpoints.Length - 1 && Pathingpoints[i + 1] != null)
             {
-                GUIStyle style = new GUIStyle();
-                style.normal.textColor = Color.white;
-                style.alignment = TextAnchor.MiddleCenter;
-                Handles.Label(Pathingpoints[i].transform.position + Vector3.up * 1.5f,
-                              Pathingpoints[i].name, style);
-
-
-                if (i < Pathingpoints.Length - 1)
-                {
-                    Gizmos.color = Color.gray;
-                    Gizmos.DrawLine(Pathingpoints[i].transform.position,
-                                    Pathingpoints[i + 1].transform.position);
-                }
+                Gizmos.color = Color.gray;
+                Gizmos.DrawLine(
+                    Pathingpoints[i].transform.position,
+                    Pathingpoints[i + 1].transform.position
+                );
             }
         }
     }
