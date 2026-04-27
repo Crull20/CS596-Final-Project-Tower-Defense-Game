@@ -2,43 +2,66 @@ using UnityEngine;
 using System.Collections.Generic;
 using NUnit.Framework.Constraints;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 public class InputHandler : MonoBehaviour
 {
-    [SerializeField] PlayerMovement _player; // Reference to the player's movement handler
+    [Header("References")]
+    [SerializeField] PlayerMovement player; // Reference to the player's movement handler
     
-    // Stores the finger IDs according to what they're touching
-    // Allows for multi-touch input
+    [Header("Camera Settings")]
+    [SerializeField] private float cameraYawSensitivity = 0.15f; // Camera sensitivity
+    [SerializeField] private float pinchSensitivity = 0.15f;
+    
+    /// <summary>
+    /// Stores each Touch input by their fingerIDs and categorizes them based on
+    /// their TouchType and what they're controlling. This allows for multi-input
+    /// functionality.
+    /// </summary>
     private Dictionary<TouchType, HashSet<int>> touchDict = new()
     {
         {TouchType.Joystick, new HashSet<int>()},
         {TouchType.Camera, new HashSet<int>()},
-        {TouchType.Gesture, new HashSet<int>()}
     };
-
-    private float halfScreenWidth; // Divide the screen space width in half
-    [SerializeField] private float cameraYawSensitivity = 0.15f; // Camera sensitivity
     
-    // Touch input roles
+    // Pinch gesture parameters
+    private float prevPinchDist;
+    private bool isPinching;
+    
+    // Screen space boundaries
+    private float halfScreenWidth; // Divide the screen space width in half
+    
+    /// <summary>
+    /// Touch input roles.
+    /// </summary>
     enum TouchType
     {
+        /// <summary>
+        /// Touch has no role.
+        /// </summary>
         None,
+        
+        /// <summary>
+        /// Touch controls the joystick.
+        /// </summary>
         Joystick,
+        
+        /// <summary>
+        /// Touch controls the camera position.
+        /// </summary>
         Camera,
-        Gesture
     }
 
     void Start()
     {
-        _player = GameObject.Find("Player").GetComponent<PlayerMovement>();
+        player = GameObject.Find("Player").GetComponent<PlayerMovement>();
         halfScreenWidth = Screen.width / 2f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log($"Player referenc: {_player.name}");
         foreach (Touch touch in Input.touches) // Check each finger touching the screen
         {
             // TODO: Tower dragging?
@@ -54,10 +77,12 @@ public class InputHandler : MonoBehaviour
                     // Check if the touch input is on the left side of the screen
                     // Joystick can only be controlled using one finger 
                     if (touch.position.x < halfScreenWidth && touchDict[TouchType.Joystick].Count == 0 &&
-                        _player.moveJoystick.TryBegin(touch, halfScreenWidth)) // TryBegin() ensures finger can operate the joystick
+                        player.moveJoystick.TryBegin(touch, halfScreenWidth)) // TryBegin() ensures finger can operate the joystick
                         touchDict[TouchType.Joystick].Add(touch.fingerId); // Set finger as Joystick type using its fingerId
                     // Camera control can only happen on the right side of the screen using only one finger
-                    else if (touch.position.x >= halfScreenWidth && touchDict[TouchType.Camera].Count == 0) 
+                    // Do not move the camera while pinching
+                    else if (touch.position.x >= halfScreenWidth && touchDict[TouchType.Camera].Count == 0 && 
+                             !isPinching) 
                         touchDict[TouchType.Camera].Add(touch.fingerId); // Set finger as Camera type using its fingerId
                     break;
 
@@ -67,7 +92,7 @@ public class InputHandler : MonoBehaviour
                     {
                         // Get the delta position of the finger and use it to move the camera
                         Vector2 lookInput = touch.deltaPosition * cameraYawSensitivity;
-                        _player.HandleCameraRotation(lookInput);
+                        player.HandleCameraRotation(lookInput);
                     }
                     break;
 
@@ -87,13 +112,65 @@ public class InputHandler : MonoBehaviour
                     }
                     break;
             }
+            
+            HandlePinchZoom();
 
             // Only allow the finger that is controlling the joystick to handle joystick logic
-            if (!_player.moveJoystick || !_player.moveJoystick.IsMyFinger(touch.fingerId)) continue;
-            _player.moveJoystick.ProcessTouch(touch); // Have the joystick process touches
+            if (!player.moveJoystick || !player.moveJoystick.IsMyFinger(touch.fingerId)) continue;
+            player.moveJoystick.ProcessTouch(touch); // Have the joystick process touches
         }
     }
 
+    /// <summary>
+    /// Detects and handles the pinching gesture to control how close the camera is
+    /// to the player.
+    /// </summary>
+    void HandlePinchZoom()
+    {
+        bool wasPinching = isPinching; // Store the previous pinching state
+        
+        List<Touch> pinchTouches = new(); // List of valid pinching inputs
+        foreach (Touch touch in Input.touches)
+        {
+            // Do not detect the finger controlling the joystick
+            if (touchDict[TouchType.Joystick].Contains(touch.fingerId)) continue;
+            
+            pinchTouches.Add(touch); // Add the touch to the potential pinch gesture
+        }
+
+        if (pinchTouches.Count != 2) // Pinching needs exactly 2 fingers
+        {
+            isPinching = false;
+            return;
+        }
+        
+        isPinching = true;
+        // Make sure no finger is moving the camera when one of the two fingers are lifted and replaced
+        if (!wasPinching && isPinching) touchDict[TouchType.Camera].Clear();
+        
+        // Get the two fingers
+        Touch touch0 = pinchTouches[0];
+        Touch touch1 = pinchTouches[1];
+
+        // Store the previous positions of the fingers
+        Vector2 touch0PrevPos = touch0.position - touch0.deltaPosition;
+        Vector2 touch1PrevPos = touch1.position - touch1.deltaPosition;
+
+        // Calculate the previous and current distances between both fingers
+        float prevDistance = Vector2.Distance(touch0PrevPos, touch1PrevPos);
+        float currentDistance = Vector2.Distance(touch0.position, touch1.position);
+
+        // Get the difference between both distances and let PlayerMovement handle camera zoom
+        float pinchDelta = currentDistance - prevDistance;
+        player.HandleCameraZoom(pinchDelta);
+    }
+
+    /// <summary>
+    /// Returns the attribute of the Touch input based on where its fingerID
+    /// is stored in touchDict's TouchTypes.
+    /// </summary>
+    /// <param name="fingerId">Integer ID of the Touch object</param>
+    /// <returns>TouchType</returns>
     TouchType GetTouchType(int fingerId)
     {
         TouchType type = TouchType.None;
