@@ -1430,7 +1430,7 @@ Transform:
   m_GameObject: {fileID: 1138025193}
   serializedVersion: 2
   m_LocalRotation: {x: 0.15212338, y: 0, z: 0, w: 0.98836154}
-  m_LocalPosition: {x: 0, y: 4.7304087, z: -8.65975}
+  m_LocalPosition: {x: 0, y: 4.706352, z: -8.583452}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1456,7 +1456,7 @@ MonoBehaviour:
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   OrbitStyle: 0
-  Radius: 9.08
+  Radius: 9
   Orbits:
     Top:
       Radius: 2
@@ -1522,6 +1522,8 @@ MonoBehaviour:
       Input:
         InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
         Gain: 1
+        LegacyInput: 
+        LegacyGain: 1
         CancelDeltaTime: 0
       InputValue: 0
       Driver:
@@ -1533,6 +1535,8 @@ MonoBehaviour:
       Input:
         InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
         Gain: -1
+        LegacyInput: 
+        LegacyGain: 1
         CancelDeltaTime: 0
       InputValue: 0
       Driver:
@@ -1544,6 +1548,8 @@ MonoBehaviour:
       Input:
         InputAction: {fileID: 5082991133974614888, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
         Gain: -1
+        LegacyInput: 
+        LegacyGain: 1
         CancelDeltaTime: 0
       InputValue: 0
       Driver:
@@ -1922,6 +1928,7 @@ MonoBehaviour:
   moveJoystick: {fileID: 329718336}
   moveSpeed: 5
   rotationSpeed: 12
+  joystickDeadzone: 0.001
   graphics: {fileID: 0}
   followCamera: {fileID: 1138025195}
   cameraPole: {fileID: 1138025194}
@@ -1930,7 +1937,7 @@ MonoBehaviour:
     m_Bits: 0
   cameraYawSensitivity: 0.15
   minCameraDistance: 3
-  maxCameraDistance: 8
+  maxCameraDistance: 15
   zoomSpeed: 0.01
   cameraHeight: 4
 --- !u!1 &1356568799
@@ -2454,7 +2461,7 @@ Transform:
   m_GameObject: {fileID: 1703982772}
   serializedVersion: 2
   m_LocalRotation: {x: 0.15212338, y: 0, z: 0, w: 0.98836154}
-  m_LocalPosition: {x: 0, y: 4.7304087, z: -8.65975}
+  m_LocalPosition: {x: 0, y: 4.706352, z: -8.583452}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2829,8 +2836,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c0dec6f09655837ca6477c42b09bcda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 1180260862}
+  player: {fileID: 0}
   cameraYawSensitivity: 0.15
+  pinchSensitivity: 0.15
 --- !u!4 &2002696946
 Transform:
   m_ObjectHideFlags: 0
