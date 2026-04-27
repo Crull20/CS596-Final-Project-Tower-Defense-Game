@@ -1,5 +1,7 @@
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 /*
 This class represents a path that enemies will follow in the game. It contains an array of
@@ -16,6 +18,7 @@ public class Path : MonoBehaviour
         return Pathingpoints[index].transform.position;
     }
 
+    #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         if (Pathingpoints.Length > 0)
@@ -38,4 +41,5 @@ public class Path : MonoBehaviour
             }
         }
     }
+    #endif
 }
