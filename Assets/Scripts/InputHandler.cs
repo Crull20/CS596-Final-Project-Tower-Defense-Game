@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class InputHandler : MonoBehaviour
 {
-    private PlayerMovement player; // Reference to the player's movement handler
+    [SerializeField] PlayerMovement _player; // Reference to the player's movement handler
     
     // Stores the finger IDs according to what they're touching
     // Allows for multi-touch input
@@ -31,13 +31,14 @@ public class InputHandler : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.Find("Player").GetComponent<PlayerMovement>();
+        _player = GameObject.Find("Player").GetComponent<PlayerMovement>();
         halfScreenWidth = Screen.width / 2f;
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log($"Player referenc: {_player.name}");
         foreach (Touch touch in Input.touches) // Check each finger touching the screen
         {
             // TODO: Tower dragging?
@@ -53,7 +54,7 @@ public class InputHandler : MonoBehaviour
                     // Check if the touch input is on the left side of the screen
                     // Joystick can only be controlled using one finger 
                     if (touch.position.x < halfScreenWidth && touchDict[TouchType.Joystick].Count == 0 &&
-                        player.moveJoystick.TryBegin(touch, halfScreenWidth)) // TryBegin() ensures finger can operate the joystick
+                        _player.moveJoystick.TryBegin(touch, halfScreenWidth)) // TryBegin() ensures finger can operate the joystick
                         touchDict[TouchType.Joystick].Add(touch.fingerId); // Set finger as Joystick type using its fingerId
                     // Camera control can only happen on the right side of the screen using only one finger
                     else if (touch.position.x >= halfScreenWidth && touchDict[TouchType.Camera].Count == 0) 
@@ -66,7 +67,7 @@ public class InputHandler : MonoBehaviour
                     {
                         // Get the delta position of the finger and use it to move the camera
                         Vector2 lookInput = touch.deltaPosition * cameraYawSensitivity;
-                        player.HandleCameraRotation(lookInput);
+                        _player.HandleCameraRotation(lookInput);
                     }
                     break;
 
@@ -88,8 +89,8 @@ public class InputHandler : MonoBehaviour
             }
 
             // Only allow the finger that is controlling the joystick to handle joystick logic
-            if (!player.moveJoystick || !player.moveJoystick.IsMyFinger(touch.fingerId)) continue;
-            player.moveJoystick.ProcessTouch(touch); // Have the joystick process touches
+            if (!_player.moveJoystick || !_player.moveJoystick.IsMyFinger(touch.fingerId)) continue;
+            _player.moveJoystick.ProcessTouch(touch); // Have the joystick process touches
         }
     }
 

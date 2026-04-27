@@ -20,6 +20,7 @@ public class Path : MonoBehaviour
         return Pathingpoints[index].transform.position;
     }
 
+    #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         if (Pathingpoints == null || Pathingpoints.Length == 0)
@@ -52,4 +53,5 @@ public class Path : MonoBehaviour
             }
         }
     }
+    #endif
 }
