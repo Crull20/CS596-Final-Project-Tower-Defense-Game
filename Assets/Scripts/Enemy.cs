@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /*
@@ -11,11 +12,15 @@ public class Enemy : MonoBehaviour
     public Path currentPath;
 
     // combat
+    [Header("Combat")]
     [SerializeField] private float maxHealth = 10f;
     private float currentHealth;
 
     private Vector3 targetPosition;
     private int currentPathingPointIndex = 0;
+
+    // lets towers know this enemy is no longer a valid target
+    public event Action<Enemy> BecameUnavailable;
 
     // needed for scripts
     public bool IsAlive => gameObject.activeInHierarchy && currentHealth > 0f;
@@ -34,7 +39,7 @@ public class Enemy : MonoBehaviour
             targetPosition = currentPath.GetPosition(currentPathingPointIndex);
     }
 
-    void Update()
+    private void Update()
     {
         if (currentPath == null) return;
 
@@ -73,7 +78,13 @@ public class Enemy : MonoBehaviour
 
         if (currentHealth <= 0f)
         {
+            currentHealth = 0f;
             gameObject.SetActive(false);
         }
+    }
+
+    private void OnDisable()
+    {
+        BecameUnavailable?.Invoke(this);
     }
 }

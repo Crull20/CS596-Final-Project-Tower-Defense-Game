@@ -118,7 +118,7 @@ public class PlayerAttack : MonoBehaviour
 
         foreach (Collider hit in hits)
         {
-            Enemy enemy = hit.GetComponent<Enemy>();
+            Enemy enemy = hit.GetComponentInParent<Enemy>();
 
             if (enemy == null || !enemy.IsAlive)
                 continue;

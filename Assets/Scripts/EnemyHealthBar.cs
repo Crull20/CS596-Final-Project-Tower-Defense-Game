@@ -24,6 +24,15 @@ public class EnemyHealthBar : MonoBehaviour
             canvas.enabled = false;
     }
 
+    private void OnEnable()
+    {
+        if (canvas == null)
+            canvas = GetComponent<Canvas>();
+
+        if (canvas != null)
+            canvas.enabled = false;
+    }
+
     private void LateUpdate()
     {
         if (enemy == null || fillImage == null)

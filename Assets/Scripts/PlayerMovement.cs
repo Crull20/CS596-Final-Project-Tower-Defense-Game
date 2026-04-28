@@ -57,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
     public void HandleCameraRotation(Vector2 input)
     {
         yawV.x += input.x;
-        yawV.y += input.y;
+        yawV.y -= input.y;
 
         if (!followCamera) return; // Must have a valid reference to a Cinemachine camera
         
