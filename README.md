@@ -24,9 +24,9 @@ The current goal of the project is to polish the behavior of towers, have a fles
 * UI
 
 #### Wyatt Cosby
-* Enemy Spawn Logic
-* Enemy Pathing Logic
-* Assistance in overall Enemy Behaviour
+* Enemy Spawn Logic and Pathing Logic
+* Enemy types, attacks, sprites, animations, etc... Any type of enemy behaviour that we decide to implement
+  
 
 #### Calvin Rull
 * Tower Assets & Animations
