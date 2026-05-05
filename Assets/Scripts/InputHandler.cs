@@ -8,11 +8,12 @@ using UnityEngine.UIElements;
 public class InputHandler : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] PlayerMovement player; // Reference to the player's movement handler
+    [SerializeField] private PlayerMovement player; // Reference to the player's movement handler
+    [SerializeField] private CameraHandler cameraHandler; // Reference to the camera handler
     
     [Header("Camera Settings")]
     [SerializeField] private float cameraYawSensitivity = 0.15f; // Camera sensitivity
-    [SerializeField] private float pinchSensitivity = 0.15f;
+    [SerializeField] private float pinchSensitivity = 0.15f; // Zoom speed
     
     /// <summary>
     /// Stores each Touch input by their fingerIDs and categorizes them based on
@@ -55,8 +56,9 @@ public class InputHandler : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.Find("Player").GetComponent<PlayerMovement>();
-        halfScreenWidth = Screen.width / 2f;
+        player = !player ? GameObject.Find("Player").GetComponent<PlayerMovement>() : player;
+        cameraHandler = !cameraHandler ? GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraHandler>() : cameraHandler;
+        halfScreenWidth = Screen.width / 2f; // Calculate where the halfway point is on the screen
     }
 
     // Update is called once per frame
@@ -92,7 +94,7 @@ public class InputHandler : MonoBehaviour
                     {
                         // Get the delta position of the finger and use it to move the camera
                         Vector2 lookInput = touch.deltaPosition * cameraYawSensitivity;
-                        player.HandleCameraRotation(lookInput);
+                        cameraHandler.HandleCameraRotation(touch.deltaPosition);
                     }
                     break;
 
@@ -162,7 +164,7 @@ public class InputHandler : MonoBehaviour
 
         // Get the difference between both distances and let PlayerMovement handle camera zoom
         float pinchDelta = currentDistance - prevDistance;
-        player.HandleCameraZoom(pinchDelta);
+        cameraHandler.HandleCameraZoom(pinchDelta);
     }
 
     /// <summary>
