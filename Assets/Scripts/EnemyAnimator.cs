@@ -22,15 +22,24 @@ public class EnemyAnimator : MonoBehaviour
     }
 
     private void OnEnable()
-    {
-        //reset last position so the run bool doesn't flicker on the first frame
+{
+    // make sure references are set
+    if (animator == null)
+        animator = GetComponent<Animator>();
+
+    if (enemyScript == null)
+        enemyScript = GetComponentInParent<Enemy>();
+
+    // use ROOT enemy position, not the model
+    if (enemyScript != null)
+        lastPosition = enemyScript.transform.position;
+    else
         lastPosition = transform.position;
 
-        //subscribe to death so we can trigger the animation when health hits zero
-        if (enemyScript != null)
-            enemyScript.OnDeath += PlayDeath;
-    }
-
+    // subscribe to death event
+    if (enemyScript != null)
+        enemyScript.OnDeath += PlayDeath;
+}
     private void OnDisable()
     {
         //unsubscribe every time the object is disabled so pooled enemies don't double-fire
@@ -39,12 +48,19 @@ public class EnemyAnimator : MonoBehaviour
     }
 
     private void Update()
-    {
-        //compare world position this frame vs last frame to detect movement
-        bool isMoving = (transform.position - lastPosition).sqrMagnitude > 0.0001f;
-        animator.SetBool("isRunning", isMoving);
-        lastPosition = transform.position;
-    }
+{
+    if (animator == null || enemyScript == null)
+        return;
+
+    // check movement using the ROOT enemy object (not the model)
+    Vector3 currentPos = enemyScript.transform.position;
+
+    bool isMoving = (currentPos - lastPosition).sqrMagnitude > 0.0001f;
+
+    animator.SetBool("isRunning", isMoving);
+
+    lastPosition = currentPos;
+}
 
     public void PlayDeath()
     {

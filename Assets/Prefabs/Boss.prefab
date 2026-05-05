@@ -326,7 +326,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9875a245ac49007498213638a307faa1, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -383,9 +383,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 635220cfa19f2484c9c16b3b1e003307, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1.5
+  speed: 2.8
   currentPath: {fileID: 0}
-  maxHealth: 60
+  maxHealth: 30
   deathHandled: 0
 --- !u!1001 &334292072443953029
 PrefabInstance:
@@ -413,7 +413,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56c223b2712218247861e0959cf58add, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.5
+      value: -0.6
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56c223b2712218247861e0959cf58add, type: 3}
       propertyPath: m_LocalPosition.z
@@ -526,6 +526,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34f78030e0aa63343ad45dd0656b442d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  enemyScript: {fileID: 0}
-  deathAnimationDuration: 2
+  animator: {fileID: 8452771529608644680}
+  enemyScript: {fileID: 7522400244988996676}
+  deathAnimationDuration: 3.2
