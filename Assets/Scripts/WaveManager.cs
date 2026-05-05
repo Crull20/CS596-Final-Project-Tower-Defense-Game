@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WaveManager : MonoBehaviour
@@ -42,6 +43,9 @@ public class WaveManager : MonoBehaviour
     public event Action OnAllWavesComplete;
 
     private int activeEnemyCount = 0;
+
+    //tracks boss instances so we can destroy them instead of returning them to a pool
+    private readonly HashSet<Enemy> spawnedBosses = new HashSet<Enemy>();
 
     private void Start()
     {
@@ -119,6 +123,7 @@ public class WaveManager : MonoBehaviour
         {
             bossEnemy.currentPath = pathToAssign;
             bossEnemy.BecameUnavailable += OnEnemyUnavailable;
+            spawnedBosses.Add(bossEnemy); //register so we know to destroy it instead of pool-return
         }
 
         activeEnemyCount++;
@@ -137,6 +142,10 @@ public class WaveManager : MonoBehaviour
         if (activeEnemyCount < 0) activeEnemyCount = 0; //safety clamp
 
         OnEnemyCountChanged?.Invoke(activeEnemyCount);
+
+        //bosses are not pooled so destroy them entirely instead of leaving them inactive
+        if (spawnedBosses.Remove(enemy))
+            Destroy(enemy.gameObject);
     }
 
     private IEnumerator PauseCountdown(float duration)
