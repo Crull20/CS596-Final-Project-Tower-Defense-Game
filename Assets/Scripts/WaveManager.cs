@@ -151,4 +151,9 @@ public class WaveManager : MonoBehaviour
         }
         OnPauseTick?.Invoke(0f);
     }
+
+    public int GetWaveCount()
+    {
+        return waves.Length;
+    }
 }
