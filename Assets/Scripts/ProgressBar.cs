@@ -41,18 +41,18 @@ public class ProgressBar : MonoBehaviour
         percentage = (float) (waveNumber - 1) / waveManager.GetWaveCount();
         
         // Display current wave number, show special text on final wave
-        waveText.text = waveNumber == waveManager.GetWaveCount() ? "FINAL WAVE" : waveNumber.ToString("WAVE: 0");
+        waveText.text = waveNumber == waveManager.GetWaveCount() ? "FINAL\nWAVE" : waveNumber.ToString("WAVE\n0");
     }
 
     void OnPauseTick(float duration)
     {
         // Show the wait time before the next wave
-        waveText.text = duration.ToString("Next wave in 0.0");
+        waveText.text = duration.ToString("Next\n0.0");
     }
 
     void OnAllWavesComplete()
     {
         percentage = 1; // Set the fill percentage to 100% and have the bar fully filled
-        waveText.text = "You win!"; // Placeholder win text TODO: make win graphic?
+        waveText.text = "You\nwin!"; // Placeholder win text TODO: make win graphic?
     }
 }
