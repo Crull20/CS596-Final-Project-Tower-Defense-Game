@@ -10,9 +10,9 @@ public class CameraHandler : MonoBehaviour
     [SerializeField] private float cameraYawSensitivity = 0.15f;
     [SerializeField] private float minCameraDistance = 3f;
     [SerializeField] private float maxCameraDistance = 8f;
-    [SerializeField] private float zoomSpeed = 0.15f;
+    [SerializeField] private float zoomSpeed = 0.01f;
 
-    private float currentCameraDistance = 6f;
+    private float currentCameraDistance = 9f;
     private Vector2 lookInput;
     private Vector2 yaw;
     
