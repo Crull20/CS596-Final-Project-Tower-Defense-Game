@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7558877368554585560}
   m_Layer: 5
   m_Name: JoystickUI
-  m_TagString: Untagged
+  m_TagString: JoystickUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 5111167274103685712}
   m_Layer: 5
   m_Name: Background
-  m_TagString: Untagged
+  m_TagString: JoystickUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 3874676933210739288}
   m_Layer: 5
   m_Name: Stick
-  m_TagString: Untagged
+  m_TagString: JoystickUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -67,11 +67,7 @@ public class InputHandler : MonoBehaviour
         foreach (Touch touch in Input.touches) // Check each finger touching the screen
         {
             // TODO: Tower dragging?
-            if (EventSystem.current &&
-                EventSystem.current.IsPointerOverGameObject(touch.fingerId))
-            {
-                continue;
-            }
+            if (IsOverUI(touch)) continue;
 
             switch (touch.phase) // Determine current touch phase
             {
@@ -165,6 +161,25 @@ public class InputHandler : MonoBehaviour
         // Get the difference between both distances and let PlayerMovement handle camera zoom
         float pinchDelta = currentDistance - prevDistance;
         cameraHandler.HandleCameraZoom(pinchDelta);
+    }
+
+    bool IsOverUI(Touch touch)
+    {
+        if (!EventSystem.current) return false;
+
+        PointerEventData eventData = new PointerEventData(EventSystem.current);
+        eventData.position = touch.position;
+        
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+
+        foreach (RaycastResult result in results)
+        {
+            if (result.gameObject.CompareTag("JoystickUI")) continue;
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>
