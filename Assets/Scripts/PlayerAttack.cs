@@ -22,7 +22,12 @@ public class PlayerAttack : MonoBehaviour
     [Header("Gun Visual")]
     [SerializeField] private GameObject gunObject;
     [SerializeField] private float gunShowTime = 0.2f;
-    [SerializeField] private Vector3 gunRotationOffset = new Vector3(0f, 90f, 0f);
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip swordSlashSound;
+    [SerializeField] private AudioClip gunShotSound;
+
+    private AudioSource audioSource;
 
     private float nextSwordAttackTime;
     private float nextProjectileAttackTime;
@@ -31,6 +36,11 @@ public class PlayerAttack : MonoBehaviour
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+
+        DisablePhysicsOnVisual(swordObject);
+        DisablePhysicsOnVisual(gunObject);
+
         if (swordObject != null)
             swordObject.SetActive(false);
 
@@ -44,6 +54,7 @@ public class PlayerAttack : MonoBehaviour
 
         if (closeEnemy != null)
         {
+            FaceEnemy(closeEnemy);
             TrySwordAttack(closeEnemy);
             return;
         }
@@ -52,8 +63,23 @@ public class PlayerAttack : MonoBehaviour
 
         if (farEnemy != null)
         {
+            FaceEnemy(farEnemy);
             TryProjectileAttack(farEnemy);
         }
+    }
+
+    private void FaceEnemy(Enemy enemy)
+    {
+        if (enemy == null)
+            return;
+
+        Vector3 direction = enemy.transform.position - transform.position;
+        direction.y = 0f;
+
+        if (direction.sqrMagnitude < 0.001f)
+            return;
+
+        transform.rotation = Quaternion.LookRotation(direction.normalized);
     }
 
     private void TrySwordAttack(Enemy enemy)
@@ -62,6 +88,11 @@ public class PlayerAttack : MonoBehaviour
             return;
 
         enemy.TakeDamage(swordDamage);
+
+        if (audioSource != null && swordSlashSound != null)
+        {
+            audioSource.PlayOneShot(swordSlashSound);
+        }
 
         if (swordRoutine != null)
             StopCoroutine(swordRoutine);
@@ -79,27 +110,29 @@ public class PlayerAttack : MonoBehaviour
         if (projectilePrefab == null || projectileSpawnPoint == null)
             return;
 
-        Vector3 direction = enemy.transform.position - projectileSpawnPoint.position;
-        direction.y = 0f;
+        Vector3 directionToEnemy = enemy.transform.position - projectileSpawnPoint.position;
+        directionToEnemy.y = 0f;
 
-        if (direction.sqrMagnitude < 0.001f)
+        if (directionToEnemy.sqrMagnitude < 0.001f)
             return;
 
-        Quaternion lookRotation = Quaternion.LookRotation(direction.normalized);
-
-        if (gunObject != null)
-            gunObject.transform.rotation = lookRotation * Quaternion.Euler(gunRotationOffset);
+        Quaternion projectileRotation = Quaternion.LookRotation(directionToEnemy.normalized);
 
         GameObject proj = Instantiate(
             projectilePrefab,
             projectileSpawnPoint.position,
-            lookRotation
+            projectileRotation
         );
 
         Projectile projectile = proj.GetComponent<Projectile>();
 
         if (projectile != null)
             projectile.SetTarget(enemy, projectileDamage);
+
+        if (audioSource != null && gunShotSound != null)
+        {
+            audioSource.PlayOneShot(gunShotSound);
+        }
 
         if (gunRoutine != null)
             StopCoroutine(gunRoutine);
@@ -173,6 +206,25 @@ public class PlayerAttack : MonoBehaviour
         gunObject.SetActive(true);
         yield return new WaitForSeconds(gunShowTime);
         gunObject.SetActive(false);
+    }
+
+    private void DisablePhysicsOnVisual(GameObject visualObject)
+    {
+        if (visualObject == null)
+            return;
+
+        Collider[] colliders = visualObject.GetComponentsInChildren<Collider>();
+
+        foreach (Collider col in colliders)
+            col.enabled = false;
+
+        Rigidbody[] rigidbodies = visualObject.GetComponentsInChildren<Rigidbody>();
+
+        foreach (Rigidbody body in rigidbodies)
+        {
+            body.isKinematic = true;
+            body.useGravity = false;
+        }
     }
 
     private void OnDrawGizmosSelected()
