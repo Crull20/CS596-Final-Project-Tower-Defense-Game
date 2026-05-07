@@ -22,6 +22,15 @@ public class Enemy : MonoBehaviour
     // lets towers know this enemy is no longer a valid target
     public event Action<Enemy> BecameUnavailable;
 
+    //fires when health hits zero so EnemyAnimator can play the death clip before deactivation
+    public event Action OnDeath;
+
+    //fires every time the enemy takes damage
+    public event Action OnTakeDamage;
+
+    //set to true by EnemyAnimator in PlayDeath() to prevent immediate self-deactivation
+    public bool deathHandled = false;
+
     // needed for scripts
     public bool IsAlive => gameObject.activeInHierarchy && currentHealth > 0f;
     public float CurrentHealth => currentHealth;
@@ -42,6 +51,15 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         if (currentPath == null) return;
+        if (currentHealth <= 0f) return; //stop moving while death animation plays
+
+        //rotate to face the direction of movement before moving
+        Vector3 dir = (targetPosition - transform.position).normalized;
+        if (dir.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRot = Quaternion.LookRotation(-dir); //negate because mixamo model faces -Z
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 10f);
+        }
 
         //move towards the position of the target
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
@@ -75,11 +93,15 @@ public class Enemy : MonoBehaviour
             return;
 
         currentHealth -= damage;
+        OnTakeDamage?.Invoke();
 
         if (currentHealth <= 0f)
         {
             currentHealth = 0f;
-            gameObject.SetActive(false);
+            deathHandled = false;
+            OnDeath?.Invoke(); //subscribers like EnemyAnimator set deathHandled = true to take over
+            if (!deathHandled)
+                gameObject.SetActive(false); //fallback for enemies with no EnemyAnimator
         }
     }
 

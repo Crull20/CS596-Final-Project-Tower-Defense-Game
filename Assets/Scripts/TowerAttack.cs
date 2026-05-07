@@ -3,6 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(SphereCollider))]
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(AudioSource))]
 public class TowerAttack : MonoBehaviour
 {
     [Header("Targeting")]
@@ -10,6 +11,7 @@ public class TowerAttack : MonoBehaviour
 
     [Header("Projectile Attack")]
     [SerializeField] private float shotsPerSecond = 1f;
+    [SerializeField] private AudioClip fireClip;
     [SerializeField] private float projectileDamage = 1f;
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform projectileSpawnPoint;
@@ -23,9 +25,11 @@ public class TowerAttack : MonoBehaviour
     private Enemy currentTarget;
     private float attackTimer;
     private SphereCollider rangeCollider;
+    private AudioSource audioSource;
 
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         rangeCollider = GetComponent<SphereCollider>();
         rangeCollider.isTrigger = true;
         rangeCollider.radius = attackRadius;
@@ -89,6 +93,9 @@ public class TowerAttack : MonoBehaviour
             spawn.position,
             lookRotation
         );
+
+        if (fireClip != null)
+            audioSource.PlayOneShot(fireClip);
 
         Projectile projectile = projectileObj.GetComponent<Projectile>();
         if (projectile != null)
