@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1627876410973887530
+--- !u!1 &2647771902759716127
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,23 +8,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4256006330504119706}
-  - component: {fileID: 9132807131315559171}
-  - component: {fileID: 8784233447964260532}
+  - component: {fileID: 5624957894831490332}
+  - component: {fileID: 9200199557233632791}
+  - component: {fileID: 1678139955921492406}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Mode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &4256006330504119706
+--- !u!224 &5624957894831490332
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1627876410973887530}
+  m_GameObject: {fileID: 2647771902759716127}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.75, z: 0.5}
@@ -34,24 +34,24 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -90.58071, y: -4.934657}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -61.009674, y: -5}
+  m_SizeDelta: {x: 168.8, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &9132807131315559171
+--- !u!222 &9200199557233632791
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1627876410973887530}
+  m_GameObject: {fileID: 2647771902759716127}
   m_CullTransparentMesh: 1
---- !u!114 &8784233447964260532
+--- !u!114 &1678139955921492406
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1627876410973887530}
+  m_GameObject: {fileID: 2647771902759716127}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
@@ -131,7 +131,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -121.55403, y: 0, z: 0, w: 0}
+  m_margin: {x: -190.89642, y: 0, z: 0, w: 12.41341}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 6238577161284191099}
   - component: {fileID: 5920374783851110183}
   - component: {fileID: 5871710901556276987}
+  - component: {fileID: 6140848292991866930}
   m_Layer: 5
   m_Name: PlaceTower
   m_TagString: Untagged
@@ -168,7 +169,7 @@ RectTransform:
   m_LocalScale: {x: 1.16, y: 0.8, z: 0.7733333}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4256006330504119706}
+  - {fileID: 5624957894831490332}
   - {fileID: 292889941803357175}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 180, y: 0, z: 180}
@@ -259,9 +260,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIHandler, Assembly-CSharp
-        m_MethodName: PlaceTowerMode
+      - m_Target: {fileID: 6140848292991866930}
+        m_TargetAssemblyTypeName: BuildTowerButton, Assembly-CSharp
+        m_MethodName: BuildTower
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -271,6 +272,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6140848292991866930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3303512844110041997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96b4dcb31f3baba4d94761e042df1039, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placementManager: {fileID: 0}
+  towerPrefab: {fileID: 7834767389476724535, guid: 2ffdeaf83a09e9545955b4ebcdd16f2a, type: 3}
 --- !u!1 &4417823331254696320
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,8 +320,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 23.559414, y: -4.934657}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 36.905197, y: -5}
+  m_SizeDelta: {x: 10, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7846981920809579038
 CanvasRenderer:
@@ -336,7 +351,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: x10
+  m_text: x1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -402,7 +417,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -121.55403, y: 0, z: 0, w: 0}
+  m_margin: {x: -121.55403, y: 0, z: 0, w: 14.654624}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

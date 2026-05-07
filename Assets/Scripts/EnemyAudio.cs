@@ -83,7 +83,7 @@ public class EnemyAudio : MonoBehaviour
             audioSource.PlayOneShot(hitClip);
     }
 
-    public void PlayDeath()
+    public void PlayDeath(Enemy enemy)
     {
         Debug.Log("PlayDeath called on " + gameObject.name);
         //clear the loop without calling Stop() so in-flight PlayOneShot calls aren't killed

@@ -21,6 +21,8 @@ public class WaveManager : MonoBehaviour
     public Path pathToAssign;
     public float pauseBetweenWaves = 10f;
 
+    public CoinCounter coinCounter;
+
     //hardcoded wave definitions — edit counts and intervals here
     private readonly Wave[] waves = new Wave[]
     {
@@ -100,7 +102,10 @@ public class WaveManager : MonoBehaviour
         //subscribe before activating so we don't miss the disable event
         Enemy enemy = obj.GetComponent<Enemy>();
         if (enemy != null)
+        {
             enemy.BecameUnavailable += OnEnemyUnavailable;
+            enemy.OnDeath += coinCounter.OnDeath; // Enemies give coins on death
+        }
 
         activeEnemyCount++;
         OnEnemyCountChanged?.Invoke(activeEnemyCount);
