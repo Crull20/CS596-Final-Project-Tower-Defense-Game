@@ -14,7 +14,12 @@ public class Enemy : MonoBehaviour
     // combat
     [Header("Combat")]
     [SerializeField] private float maxHealth = 10f;
+    [SerializeField] private float damage = 5f;
     private float currentHealth;
+    
+    // player health bar
+    [Header("References")]
+    public HealthBar healthBar;
 
     private Vector3 targetPosition;
     private int currentPathingPointIndex = 0;
@@ -42,6 +47,8 @@ public class Enemy : MonoBehaviour
         currentPathingPointIndex = 0;
 
         currentHealth = maxHealth;
+        
+        healthBar = GameObject.Find("HealthBar").GetComponent<HealthBar>();
 
         //set the target position to the position of the first pathing point
         if (currentPath != null)
@@ -82,6 +89,9 @@ public class Enemy : MonoBehaviour
                 //if there are no more pathing points, the enemy has reached the end of the path
                 //deactivate the enemy game object to return it to the pool
                 gameObject.SetActive(false);
+                
+                // Inflict damage to the player
+                healthBar.DrainHealth(damage);
             }
         }
     }

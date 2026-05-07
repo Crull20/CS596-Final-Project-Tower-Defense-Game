@@ -386,6 +386,8 @@ MonoBehaviour:
   speed: 2.8
   currentPath: {fileID: 0}
   maxHealth: 10
+  damage: 15
+  healthBar: {fileID: 0}
   deathHandled: 0
 --- !u!1001 &334292072443953029
 PrefabInstance:
