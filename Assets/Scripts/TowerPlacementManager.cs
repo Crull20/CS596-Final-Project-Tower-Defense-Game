@@ -8,6 +8,7 @@ public class TowerPlacementManager : MonoBehaviour
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Button confirmButton;
     [SerializeField] private Button cancelButton;
+    [SerializeField] private PlayerMovement playerMovement;
 
     [Header("Placement")]
     [SerializeField] private LayerMask placementLayers;
@@ -16,8 +17,12 @@ public class TowerPlacementManager : MonoBehaviour
     private GameObject previewInstance;
     private PlaceableTower previewTower;
     private GameObject pendingPrefab;
+
     private bool isPlacing;
     private bool hasValidPlacement;
+
+    private Vector3 lastValidPosition;
+    private int placementFingerId = -1;
 
     private void Awake()
     {
@@ -38,11 +43,11 @@ public class TowerPlacementManager : MonoBehaviour
         if (!isPlacing || previewInstance == null)
             return;
 
-        if (TryGetPointerScreenPosition(out Vector2 screenPos, out int pointerId))
-        {
-            if (!IsPointerOverUI(pointerId))
-                UpdatePreviewPosition(screenPos);
-        }
+#if UNITY_EDITOR || UNITY_STANDALONE
+        HandleMousePlacement();
+#else
+        HandleTouchPlacement();
+#endif
     }
 
     public void BeginPlacement(GameObject towerPrefab)
@@ -63,6 +68,11 @@ public class TowerPlacementManager : MonoBehaviour
 
         isPlacing = true;
         hasValidPlacement = false;
+        placementFingerId = -1;
+
+        if (playerMovement != null)
+            playerMovement.CanMove = false;
+
         SetPlacementButtonsVisible(true);
     }
 
@@ -71,6 +81,7 @@ public class TowerPlacementManager : MonoBehaviour
         if (!isPlacing || previewInstance == null || !hasValidPlacement)
             return;
 
+        previewInstance.transform.position = lastValidPosition;
         previewTower.SetPreviewMode(false);
 
         previewInstance = null;
@@ -78,6 +89,10 @@ public class TowerPlacementManager : MonoBehaviour
         pendingPrefab = null;
         isPlacing = false;
         hasValidPlacement = false;
+        placementFingerId = -1;
+
+        if (playerMovement != null)
+            playerMovement.CanMove = true;
 
         SetPlacementButtonsVisible(false);
     }
@@ -92,13 +107,57 @@ public class TowerPlacementManager : MonoBehaviour
         pendingPrefab = null;
         isPlacing = false;
         hasValidPlacement = false;
+        placementFingerId = -1;
+
+        if (playerMovement != null)
+            playerMovement.CanMove = true;
 
         SetPlacementButtonsVisible(false);
     }
 
+    private void HandleTouchPlacement()
+    {
+        for (int i = 0; i < Input.touchCount; i++)
+        {
+            Touch touch = Input.GetTouch(i);
+
+            if (placementFingerId == -1)
+            {
+                if (touch.phase == TouchPhase.Began &&
+                    !IsPointerOverUI(touch.fingerId))
+                {
+                    placementFingerId = touch.fingerId;
+                    UpdatePreviewPosition(touch.position);
+                    return;
+                }
+            }
+            else if (touch.fingerId == placementFingerId)
+            {
+                if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+                {
+                    UpdatePreviewPosition(touch.position);
+                }
+                else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+                {
+                    placementFingerId = -1;
+                }
+
+                return;
+            }
+        }
+    }
+
+    private void HandleMousePlacement()
+    {
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            return;
+
+        UpdatePreviewPosition(Input.mousePosition);
+    }
+
     private void UpdatePreviewPosition(Vector2 screenPos)
     {
-        if (mainCamera == null)
+        if (mainCamera == null || previewInstance == null)
             return;
 
         Ray ray = mainCamera.ScreenPointToRay(screenPos);
@@ -109,6 +168,7 @@ public class TowerPlacementManager : MonoBehaviour
             pos.y += yOffset;
 
             previewInstance.transform.position = pos;
+            lastValidPosition = pos;
             hasValidPlacement = true;
 
             if (previewTower != null)
@@ -123,38 +183,12 @@ public class TowerPlacementManager : MonoBehaviour
         }
     }
 
-    private bool TryGetPointerScreenPosition(out Vector2 screenPos, out int pointerId)
-    {
-        screenPos = default;
-        pointerId = -1;
-
-        if (Input.touchCount > 0)
-        {
-            Touch touch = Input.GetTouch(0);
-            screenPos = touch.position;
-            pointerId = touch.fingerId;
-            return true;
-        }
-
-        if (Input.mousePresent)
-        {
-            screenPos = Input.mousePosition;
-            pointerId = -1;
-            return true;
-        }
-
-        return false;
-    }
-
-    private bool IsPointerOverUI(int pointerId)
+    private bool IsPointerOverUI(int fingerId)
     {
         if (EventSystem.current == null)
             return false;
 
-        if (pointerId >= 0)
-            return EventSystem.current.IsPointerOverGameObject(pointerId);
-
-        return EventSystem.current.IsPointerOverGameObject();
+        return EventSystem.current.IsPointerOverGameObject(fingerId);
     }
 
     private void SetPlacementButtonsVisible(bool visible)
