@@ -93,7 +93,7 @@ public class FloatingJoystickUI : MonoBehaviour
         InputVector = clamped / radius;
     }
 
-    private void EndTouch()
+    public void EndTouch()
     {
         activeFingerId = -1;
         HideJoystick();

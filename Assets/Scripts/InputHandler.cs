@@ -1,18 +1,16 @@
 using UnityEngine;
 using System.Collections.Generic;
-using NUnit.Framework.Constraints;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
-using UnityEngine.UIElements;
 
 public class InputHandler : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] PlayerMovement player; // Reference to the player's movement handler
+    [SerializeField] private PlayerMovement player; // Reference to the player's movement handler
+    [SerializeField] private CameraHandler cameraHandler; // Reference to the camera handler
     
     [Header("Camera Settings")]
     [SerializeField] private float cameraYawSensitivity = 0.15f; // Camera sensitivity
-    [SerializeField] private float pinchSensitivity = 0.15f;
+    [SerializeField] private float pinchSensitivity = 0.15f; // Zoom speed
     
     /// <summary>
     /// Stores each Touch input by their fingerIDs and categorizes them based on
@@ -55,8 +53,9 @@ public class InputHandler : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.Find("Player").GetComponent<PlayerMovement>();
-        halfScreenWidth = Screen.width / 2f;
+        player = !player ? GameObject.Find("Player").GetComponent<PlayerMovement>() : player;
+        cameraHandler = !cameraHandler ? GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraHandler>() : cameraHandler;
+        halfScreenWidth = Screen.width / 2f; // Calculate where the halfway point is on the screen
     }
 
     // Update is called once per frame
@@ -64,12 +63,8 @@ public class InputHandler : MonoBehaviour
     {
         foreach (Touch touch in Input.touches) // Check each finger touching the screen
         {
-            // TODO: Tower dragging?
-            if (EventSystem.current &&
-                EventSystem.current.IsPointerOverGameObject(touch.fingerId))
-            {
-                continue;
-            }
+            // Check if the finger is on a UI element
+            if (IsOverUI(touch)) continue;
 
             switch (touch.phase) // Determine current touch phase
             {
@@ -92,7 +87,7 @@ public class InputHandler : MonoBehaviour
                     {
                         // Get the delta position of the finger and use it to move the camera
                         Vector2 lookInput = touch.deltaPosition * cameraYawSensitivity;
-                        player.HandleCameraRotation(lookInput);
+                        cameraHandler.HandleCameraRotation(touch.deltaPosition);
                     }
                     break;
 
@@ -162,7 +157,41 @@ public class InputHandler : MonoBehaviour
 
         // Get the difference between both distances and let PlayerMovement handle camera zoom
         float pinchDelta = currentDistance - prevDistance;
-        player.HandleCameraZoom(pinchDelta);
+        cameraHandler.HandleCameraZoom(pinchDelta);
+    }
+
+    /// <summary>
+    /// Detects touch input over UI elements. Ignores UI elements integral to player movement
+    /// such as JoystickUI.
+    /// </summary>
+    bool IsOverUI(Touch touch)
+    {
+        if (!EventSystem.current) return false; // Do nothing if EventSystem is not found in the scene
+
+        // Get the event data of the object at the touch's position
+        PointerEventData eventData = new PointerEventData(EventSystem.current);
+        eventData.position = touch.position;
+        
+        // Raycast to all objects at that position
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+
+        foreach (RaycastResult result in results)
+        {
+            if (result.gameObject.CompareTag("JoystickUI")) continue; // Ignore joystick
+            return true; // Finger is on a UI element
+        }
+
+        return false;
+    }
+
+    public void CancelInput()
+    {
+        // Stop tracking touch roles
+        foreach (var touchSet in touchDict.Values) touchSet.Clear();
+
+        // Reset joystick
+        if (player.moveJoystick) player.moveJoystick.EndTouch();
     }
 
     /// <summary>
