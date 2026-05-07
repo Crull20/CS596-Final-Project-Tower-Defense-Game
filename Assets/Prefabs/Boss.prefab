@@ -646,4 +646,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyScript: {fileID: 7522400244988996676}
   deathClip: {fileID: 8300000, guid: a0010a1a0c474473b81729eb770c485f, type: 3}
+  hitClip: {fileID: 8300000, guid: 724131bc8a7f34041bb9f1701f0cb58d, type: 3}
   groundImpactClip: {fileID: 8300000, guid: cabfae866cab347928b74b7d0ca6bfa9, type: 3}
+  footstepLoopClip: {fileID: 0}
+  stepClip: {fileID: 8300000, guid: b99da9a57308d4ba1bee1cf1d9038376, type: 3}
+  animator: {fileID: 8452771529608644680}
+  runningParam: isRunning
