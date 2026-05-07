@@ -6,14 +6,13 @@ public class PlaceableTower : MonoBehaviour
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Collider[] colliders;
     [SerializeField] private Renderer[] renderers;
+    [SerializeField] private TowerRangeIndicator rangeIndicator;
 
     [Header("Preview Look")]
     [SerializeField] private Color previewColor = new Color(0f, 1f, 0f, 0.6f);
     [SerializeField] private Color blockedColor = new Color(1f, 0f, 0f, 0.6f);
 
-    private Color[] originalColors;
     private MaterialPropertyBlock propertyBlock;
-
     private bool isPreview;
 
     private void Awake()
@@ -29,6 +28,9 @@ public class PlaceableTower : MonoBehaviour
 
         if (renderers == null || renderers.Length == 0)
             renderers = GetComponentsInChildren<Renderer>(true);
+
+        if (rangeIndicator == null)
+            rangeIndicator = GetComponentInChildren<TowerRangeIndicator>(true);
 
         propertyBlock = new MaterialPropertyBlock();
     }
@@ -50,6 +52,12 @@ public class PlaceableTower : MonoBehaviour
         {
             if (colliders[i] != null)
                 colliders[i].enabled = !preview;
+        }
+
+        if (rangeIndicator != null)
+        {
+            rangeIndicator.Refresh();
+            rangeIndicator.SetVisible(preview);
         }
 
         SetPreviewVisual(previewColor);
