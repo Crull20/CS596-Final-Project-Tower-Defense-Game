@@ -734,8 +734,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: BadGuys
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: b9f31a63382e70b40a537803c4b84f95, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 02f5f2d87886e954dbff4335f7880469, type: 2}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1990591789665692621, guid: b9f31a63382e70b40a537803c4b84f95, type: 3}
+    - {fileID: -3926419078419811527, guid: b9f31a63382e70b40a537803c4b84f95, type: 3}
+    - {fileID: 5226967472521954393, guid: b9f31a63382e70b40a537803c4b84f95, type: 3}
+    - {fileID: 6692175456642429180, guid: b9f31a63382e70b40a537803c4b84f95, type: 3}
+    - {fileID: 1216490987784439575, guid: b9f31a63382e70b40a537803c4b84f95, type: 3}
+    - {fileID: 710183102880238943, guid: b9f31a63382e70b40a537803c4b84f95, type: 3}
+    - {fileID: 334532025680783060, guid: b9f31a63382e70b40a537803c4b84f95, type: 3}
+    - {fileID: 6666603822528672967, guid: b9f31a63382e70b40a537803c4b84f95, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b9f31a63382e70b40a537803c4b84f95, type: 3}
@@ -1054,7 +1066,7 @@ Transform:
   m_GameObject: {fileID: 661522712}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0, z: 0}
+  m_LocalPosition: {x: 0.019, y: 1.133, z: 0.36}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1122,7 +1134,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 688647316}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -2228,9 +2240,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.518826
-  m_Height: 2.0052023
+  m_Height: 1.9821757
   m_Direction: 1
-  m_Center: {x: 0.0021026134, y: 0.0013084412, z: 0}
+  m_Center: {x: 0.0021026134, y: 0.9362455, z: 0}
 --- !u!54 &1180260858
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3596,7 +3608,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1860651689}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
