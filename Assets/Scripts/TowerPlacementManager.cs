@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 public class TowerPlacementManager : MonoBehaviour
 {
@@ -10,11 +11,14 @@ public class TowerPlacementManager : MonoBehaviour
     [SerializeField] private Button cancelButton;
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private InputHandler inputHandler;
+    [SerializeField] private TextMeshProUGUI towerCounter;
 
     [Header("Placement")]
     [SerializeField] private LayerMask placementLayers;
     [SerializeField] private float yOffset = 0f;
 
+
+    private int towerCount;
     private GameObject previewInstance;
     private PlaceableTower previewTower;
     private GameObject pendingPrefab;
@@ -43,6 +47,8 @@ public class TowerPlacementManager : MonoBehaviour
     {
         if (!isPlacing || previewInstance == null)
             return;
+
+        towerCounter.text = towerCount.ToString("x0");
 
 #if UNITY_EDITOR || UNITY_STANDALONE
         HandleMousePlacement();
@@ -202,4 +208,12 @@ public class TowerPlacementManager : MonoBehaviour
     }
 
     public bool IsPlacing => isPlacing;
+
+    public int TowerCount => towerCount;
+
+    public void AddTower()
+    {
+        // Add a tower to the player's inventory when a tower is bought
+        towerCount++;
+    }
 }

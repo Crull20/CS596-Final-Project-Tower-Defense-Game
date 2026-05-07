@@ -4,8 +4,8 @@ using TMPro;
 public class CoinCounter : MonoBehaviour
 {
     [Header("Coin Amounts")] 
-    public int enemyCoinReward = 10;
-    public int bossCoinReward = 25;
+    public int enemyCoinReward = 5;
+    public int bossCoinReward = 10;
     
     [Header("References")]
     public TextMeshProUGUI coinText;
@@ -26,5 +26,15 @@ public class CoinCounter : MonoBehaviour
     {
         enemy.OnDeath -= OnDeath; // Unsubscribe to avoid gaining coins unexpectedly
         coins += enemy.gameObject.CompareTag("Boss") ? bossCoinReward : enemyCoinReward; // Bosses should give more
+    }
+
+    public int GetCoins()
+    {
+        return coins;
+    }
+
+    public void RemoveCoins(int amount)
+    {
+        coins -= amount;
     }
 }
