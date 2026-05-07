@@ -20,8 +20,6 @@ public class TowerAttack : MonoBehaviour
     [SerializeField] private Transform turretHead;
     [SerializeField] private float turnSpeed = 10f;
 
-    public float AttackRadius => attackRadius;
-
     private readonly List<Enemy> enemiesInRange = new List<Enemy>();
 
     private Enemy currentTarget;
