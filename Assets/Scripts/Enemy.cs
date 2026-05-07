@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour
     public event Action<Enemy> BecameUnavailable;
 
     //fires when health hits zero so EnemyAnimator can play the death clip before deactivation
-    public event Action OnDeath;
+    public event Action<Enemy> OnDeath;
 
     //fires every time the enemy takes damage
     public event Action OnTakeDamage;
@@ -99,7 +99,7 @@ public class Enemy : MonoBehaviour
         {
             currentHealth = 0f;
             deathHandled = false;
-            OnDeath?.Invoke(); //subscribers like EnemyAnimator set deathHandled = true to take over
+            OnDeath?.Invoke(this); //subscribers like EnemyAnimator set deathHandled = true to take over
             if (!deathHandled)
                 gameObject.SetActive(false); //fallback for enemies with no EnemyAnimator
         }

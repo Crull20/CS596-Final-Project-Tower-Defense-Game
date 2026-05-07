@@ -9,6 +9,7 @@ public class TowerPlacementManager : MonoBehaviour
     [SerializeField] private Button confirmButton;
     [SerializeField] private Button cancelButton;
     [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private InputHandler inputHandler;
 
     [Header("Placement")]
     [SerializeField] private LayerMask placementLayers;
@@ -29,11 +30,11 @@ public class TowerPlacementManager : MonoBehaviour
         if (mainCamera == null)
             mainCamera = Camera.main;
 
-        if (confirmButton != null)
-            confirmButton.onClick.AddListener(ConfirmPlacement);
-
-        if (cancelButton != null)
-            cancelButton.onClick.AddListener(CancelPlacement);
+        // if (confirmButton != null)
+        //     confirmButton.onClick.AddListener(ConfirmPlacement);
+        //
+        // if (cancelButton != null)
+        //     cancelButton.onClick.AddListener(CancelPlacement);
 
         SetPlacementButtonsVisible(false);
     }
@@ -124,7 +125,7 @@ public class TowerPlacementManager : MonoBehaviour
             if (placementFingerId == -1)
             {
                 if (touch.phase == TouchPhase.Began &&
-                    !IsPointerOverUI(touch.fingerId))
+                    !IsPointerOverUI(touch))
                 {
                     placementFingerId = touch.fingerId;
                     UpdatePreviewPosition(touch.position);
@@ -183,12 +184,12 @@ public class TowerPlacementManager : MonoBehaviour
         }
     }
 
-    private bool IsPointerOverUI(int fingerId)
+    private bool IsPointerOverUI(Touch touch)
     {
         if (EventSystem.current == null)
             return false;
 
-        return EventSystem.current.IsPointerOverGameObject(fingerId);
+        return inputHandler.IsOverUI(touch);
     }
 
     private void SetPlacementButtonsVisible(bool visible)
@@ -199,4 +200,6 @@ public class TowerPlacementManager : MonoBehaviour
         if (cancelButton != null)
             cancelButton.gameObject.SetActive(visible);
     }
+
+    public bool IsPlacing => isPlacing;
 }

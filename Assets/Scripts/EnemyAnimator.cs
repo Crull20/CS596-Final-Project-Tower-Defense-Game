@@ -62,7 +62,7 @@ public class EnemyAnimator : MonoBehaviour
     lastPosition = currentPos;
 }
 
-    public void PlayDeath()
+    public void PlayDeath(Enemy enemy)
     {
         //claim deactivation responsibility so Enemy doesn't self-deactivate immediately
         if (enemyScript != null)
