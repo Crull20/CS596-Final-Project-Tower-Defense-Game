@@ -48,7 +48,7 @@ public class TowerPlacementManager : MonoBehaviour
         if (!isPlacing || previewInstance == null)
             return;
 
-        towerCounter.text = towerCount.ToString("x0");
+        towerCounter.text = "x" + towerCount.ToString();
 
 #if UNITY_EDITOR || UNITY_STANDALONE
         HandleMousePlacement();
