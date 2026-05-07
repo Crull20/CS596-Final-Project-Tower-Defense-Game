@@ -17,7 +17,9 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Camera")] 
     [SerializeField] private Transform cameraPole;
-    
+
+    public bool CanMove { get; set; } = true;
+
     private Vector3 moveDirection;
     
     private void Awake()
@@ -39,6 +41,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleMovementInput()
     {
+        if (!CanMove)
+        {
+            moveDirection = Vector3.zero;
+            return;
+        }
+
         // Check if the joystick reference is present before reading its value
         Vector2 input = moveJoystick ? moveJoystick.InputVector : Vector2.zero;
 
@@ -68,6 +76,14 @@ public class PlayerMovement : MonoBehaviour
     {
         // Get the current velocity
         Vector3 velocity = rb.linearVelocity;
+
+        if (!CanMove)
+        {
+            velocity.x = 0f;
+            velocity.z = 0f;
+            rb.linearVelocity = velocity;
+            return;
+        }
         // Multiply the player's X and Y velocities with the move speed
         velocity.x = moveDirection.x * moveSpeed;
         velocity.z = moveDirection.z * moveSpeed;
@@ -76,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ApplyRotation()
     {
-        if (moveDirection.sqrMagnitude < 0.001f)
+        if (!CanMove || moveDirection.sqrMagnitude < 0.001f)
             return;
 
         Quaternion targetRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
