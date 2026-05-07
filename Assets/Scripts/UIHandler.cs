@@ -2,23 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class UIHandler : MonoBehaviour
 {
     [Header("UI Elements")] 
-    public GameObject ShopPanel;
-    public GameObject PauseMenu;
+    public GameObject shopPanel;
+    public GameObject pauseMenu;
+
+    [Header("Input Handler")] 
+    public InputHandler inputHandler;
 
     void Start()
     {
-        ShopPanel ??= GameObject.Find("ShopPanel"); // Ideally, ShopPanel should be active
-        if (ShopPanel) ShopPanel.SetActive(false); // Hide the shop
-        //PauseMenu ??= GameObject.Find("PauseMenu"); TODO: implement pause menu if time permits
+        inputHandler ??= GameObject.Find("InputHandler").GetComponent<InputHandler>();
+        
+        shopPanel ??= GameObject.Find("ShopPanel"); // Ideally shopPanel should be active in the scene before runtime
+        if (shopPanel) shopPanel.SetActive(false); // Hide the shop
+        //pauseMenu ??= GameObject.Find("pauseMenu"); TODO: implement pause menu if time permits
     }
 
     public void OpenShop()
     {
-        if (!ShopPanel.activeSelf) ShopPanel.SetActive(true);
+        inputHandler.CancelInput(); // Force cancel player inputs
+        if (!shopPanel.activeSelf) shopPanel.SetActive(true);
     }
 
     public void PlaceTowerMode()
@@ -28,6 +35,7 @@ public class UIHandler : MonoBehaviour
 
     public void PauseGame()
     {
+        inputHandler.CancelInput(); // Force cancel player inputs
         // TODO: implement pause menu if time permits
     }
 }

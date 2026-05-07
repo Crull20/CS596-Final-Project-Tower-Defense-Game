@@ -1,9 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-using NUnit.Framework.Constraints;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
-using UnityEngine.UIElements;
 
 public class InputHandler : MonoBehaviour
 {
@@ -66,7 +63,7 @@ public class InputHandler : MonoBehaviour
     {
         foreach (Touch touch in Input.touches) // Check each finger touching the screen
         {
-            // TODO: Tower dragging?
+            // Check if the finger is on a UI element
             if (IsOverUI(touch)) continue;
 
             switch (touch.phase) // Determine current touch phase
@@ -163,23 +160,38 @@ public class InputHandler : MonoBehaviour
         cameraHandler.HandleCameraZoom(pinchDelta);
     }
 
+    /// <summary>
+    /// Detects touch input over UI elements. Ignores UI elements integral to player movement
+    /// such as JoystickUI.
+    /// </summary>
     bool IsOverUI(Touch touch)
     {
-        if (!EventSystem.current) return false;
+        if (!EventSystem.current) return false; // Do nothing if EventSystem is not found in the scene
 
+        // Get the event data of the object at the touch's position
         PointerEventData eventData = new PointerEventData(EventSystem.current);
         eventData.position = touch.position;
         
+        // Raycast to all objects at that position
         List<RaycastResult> results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, results);
 
         foreach (RaycastResult result in results)
         {
-            if (result.gameObject.CompareTag("JoystickUI")) continue;
-            return true;
+            if (result.gameObject.CompareTag("JoystickUI")) continue; // Ignore joystick
+            return true; // Finger is on a UI element
         }
 
         return false;
+    }
+
+    public void CancelInput()
+    {
+        // Stop tracking touch roles
+        foreach (var touchSet in touchDict.Values) touchSet.Clear();
+
+        // Reset joystick
+        if (player.moveJoystick) player.moveJoystick.EndTouch();
     }
 
     /// <summary>

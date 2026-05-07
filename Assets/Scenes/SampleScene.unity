@@ -958,8 +958,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de636c8e3a6987f4083aaf4935432eba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShopPanel: {fileID: 1749505832}
-  PauseMenu: {fileID: 0}
+  shopPanel: {fileID: 1749505832}
+  pauseMenu: {fileID: 0}
+  inputHandler: {fileID: 2002696945}
 --- !u!224 &806723554 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7464985241822581694, guid: 7977fd65311a12865a657b4bc977deb3, type: 3}
@@ -3442,22 +3443,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1235307948739010542, guid: 74024e72931a81401bf317355f577ecb, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2593605644983782032, guid: 74024e72931a81401bf317355f577ecb, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2593605644983782032, guid: 74024e72931a81401bf317355f577ecb, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2593605644983782032, guid: 74024e72931a81401bf317355f577ecb, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3320643319426074801, guid: 74024e72931a81401bf317355f577ecb, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3538,18 +3523,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3444668341946060543, guid: 74024e72931a81401bf317355f577ecb, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3444668341946060543, guid: 74024e72931a81401bf317355f577ecb, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3444668341946060543, guid: 74024e72931a81401bf317355f577ecb, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7305495441633861309, guid: 74024e72931a81401bf317355f577ecb, type: 3}
       propertyPath: m_Name
       value: ShopPanel
@@ -3560,10 +3533,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8659866935874236293, guid: 74024e72931a81401bf317355f577ecb, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8659866935874236293, guid: 74024e72931a81401bf317355f577ecb, type: 3}
-      propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
