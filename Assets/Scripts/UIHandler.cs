@@ -9,30 +9,35 @@ public class UIHandler : MonoBehaviour
     [Header("UI Elements")] 
     public GameObject shopPanel;
     public GameObject pauseMenu;
+    public GameObject confirmTowerButton;
+    public GameObject cancelTowerButton;
 
-    [Header("Input Handler")] 
+    [Header("Handlers")] 
     public InputHandler inputHandler;
-
+    
     void Start()
     {
         inputHandler ??= GameObject.Find("InputHandler").GetComponent<InputHandler>();
         
-        // Ideally shopPanel and pauseMenu should be active in the scene before runtime
-        shopPanel ??= GameObject.Find("ShopPanel"); // Ideally shopPanel should be active in the scene before runtime
-        if (shopPanel) shopPanel.SetActive(false); // Hide the shop
-        pauseMenu ??= GameObject.Find("PausePanel");
-        if (pauseMenu) pauseMenu.SetActive(false); // Hide the pause menu
+        // These UI elements should be active in the scene before runtime so that they are deactivated on start
+        // UI handler should also have these references set in the editor
+        List<GameObject> uiElements = new List<GameObject>()
+        {
+            shopPanel,
+            pauseMenu,
+            confirmTowerButton,
+            cancelTowerButton
+        };
+        foreach (GameObject element in uiElements)
+        {
+            element.SetActive(false);
+        }
     }
 
     public void OpenShop()
     {
         inputHandler.CancelInput(); // Force cancel player inputs
         if (!shopPanel.activeSelf) shopPanel.SetActive(true); // Ensure shop is inactive before opening it
-    }
-
-    public void PlaceTowerMode()
-    {
-        // TODO: implement tower button
     }
 
     public void PauseGame()

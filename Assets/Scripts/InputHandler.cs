@@ -5,8 +5,10 @@ using UnityEngine.EventSystems;
 public class InputHandler : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private PlayerMovement player; // Reference to the player's movement handler
-    [SerializeField] private CameraHandler cameraHandler; // Reference to the camera handler
+    [SerializeField] private PlayerMovement player;
+    [SerializeField] private CameraHandler cameraHandler;
+    [SerializeField] private TowerPlacementManager towerPlacement;
+    
     
     [Header("Camera Settings")]
     [SerializeField] private float cameraYawSensitivity = 0.15f; // Camera sensitivity
@@ -63,8 +65,8 @@ public class InputHandler : MonoBehaviour
     {
         foreach (Touch touch in Input.touches) // Check each finger touching the screen
         {
-            // Check if the finger is on a UI element
-            if (IsOverUI(touch)) continue;
+            // Check if the finger is on a UI element or if the player is placing a tower
+            if (IsOverUI(touch) || towerPlacement.IsPlacing) continue;
 
             switch (touch.phase) // Determine current touch phase
             {
@@ -164,7 +166,7 @@ public class InputHandler : MonoBehaviour
     /// Detects touch input over UI elements. Ignores UI elements integral to player movement
     /// such as JoystickUI.
     /// </summary>
-    bool IsOverUI(Touch touch)
+    public bool IsOverUI(Touch touch)
     {
         if (!EventSystem.current) return false; // Do nothing if EventSystem is not found in the scene
 
