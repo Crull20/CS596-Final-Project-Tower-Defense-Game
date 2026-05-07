@@ -24,7 +24,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float maxCameraDistance = 8f;
     [SerializeField] private float zoomSpeed = 0.01f;
     [SerializeField] private float cameraHeight = 4f;
-    
+
+    public bool CanMove { get; set; } = true;
+
     private Vector2 lookInput;
     private Vector3 moveDirection;
     private Vector2 yawV;
@@ -78,6 +80,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleMovementInput()
     {
+        if (!CanMove)
+        {
+            moveDirection = Vector3.zero;
+
+            if (moveJoystick != null)
+                moveJoystick.gameObject.SetActive(false);
+
+            return;
+        }
+
         Vector2 input = moveJoystick ? moveJoystick.InputVector : Vector2.zero;
 
         if (input.sqrMagnitude < joystickDeadzone)
@@ -101,6 +113,15 @@ public class PlayerMovement : MonoBehaviour
     private void ApplyMovement()
     {
         Vector3 velocity = rb.linearVelocity;
+
+        if (!CanMove)
+        {
+            velocity.x = 0f;
+            velocity.z = 0f;
+            rb.linearVelocity = velocity;
+            return;
+        }
+
         velocity.x = moveDirection.x * moveSpeed;
         velocity.z = moveDirection.z * moveSpeed;
         rb.linearVelocity = velocity;
