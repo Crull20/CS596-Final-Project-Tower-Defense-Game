@@ -25,6 +25,9 @@ public class Enemy : MonoBehaviour
     //fires when health hits zero so EnemyAnimator can play the death clip before deactivation
     public event Action OnDeath;
 
+    //fires every time the enemy takes damage
+    public event Action OnTakeDamage;
+
     //set to true by EnemyAnimator in PlayDeath() to prevent immediate self-deactivation
     public bool deathHandled = false;
 
@@ -90,6 +93,7 @@ public class Enemy : MonoBehaviour
             return;
 
         currentHealth -= damage;
+        OnTakeDamage?.Invoke();
 
         if (currentHealth <= 0f)
         {
