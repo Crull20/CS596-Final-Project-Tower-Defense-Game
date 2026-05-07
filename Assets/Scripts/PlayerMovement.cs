@@ -1,13 +1,11 @@
-using System.Collections.Generic;
-using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class PlayerMovement : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Rigidbody rb;
     [SerializeField] public FloatingJoystickUI moveJoystick;
+    [SerializeField] private Animator animator;
 
     [Header("Character")]
     [SerializeField] private float moveSpeed = 5f;
@@ -15,22 +13,32 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float joystickDeadzone = 0.001f;
     [SerializeField] private Transform graphics;
 
-    [Header("Camera")] 
+    [Header("Camera")]
     [SerializeField] private Transform cameraPole;
+
+    [Header("Animation")]
+    [SerializeField] private float animationDampTime = 0.1f;
 
     public bool CanMove { get; set; } = true;
 
     private Vector3 moveDirection;
-    
+    private float moveAmount;
+
+    private static readonly int SpeedHash = Animator.StringToHash("Speed");
+
     private void Awake()
     {
         if (rb == null)
             rb = GetComponent<Rigidbody>();
+
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
     {
         HandleMovementInput();
+        UpdateAnimator();
     }
 
     private void FixedUpdate()
@@ -44,32 +52,35 @@ public class PlayerMovement : MonoBehaviour
         if (!CanMove)
         {
             moveDirection = Vector3.zero;
+            moveAmount = 0f;
             return;
         }
 
-        // Check if the joystick reference is present before reading its value
         Vector2 input = moveJoystick ? moveJoystick.InputVector : Vector2.zero;
+        input = Vector2.ClampMagnitude(input, 1f);
 
-        // Do not move the player if the joystick is within the deadzone
         if (input.sqrMagnitude < joystickDeadzone)
         {
             moveDirection = Vector3.zero;
+            moveAmount = 0f;
             return;
         }
 
-        // Move in a direction based on where the camera is pointing
         Vector3 forward = cameraPole ? cameraPole.forward : transform.forward;
         Vector3 right = cameraPole ? cameraPole.right : transform.right;
 
-        // Don't modify the player's Y position
         forward.y = 0f;
         right.y = 0f;
-        
+
         forward.Normalize();
         right.Normalize();
 
-        // Set player movement
-        moveDirection = (right * input.x + forward * input.y).normalized;
+        moveDirection = right * input.x + forward * input.y;
+
+        if (moveDirection.sqrMagnitude > 1f)
+            moveDirection.Normalize();
+
+        moveAmount = Mathf.Clamp01(input.magnitude);
     }
 
     private void ApplyMovement()
@@ -113,5 +124,19 @@ public class PlayerMovement : MonoBehaviour
                 rotationSpeed * Time.fixedDeltaTime
             ));
         }
+    }
+    private void UpdateAnimator()
+    {
+        if (animator == null)
+            return;
+
+        float targetSpeed = CanMove ? moveAmount : 0f;
+
+        animator.SetFloat(
+            SpeedHash,
+            targetSpeed,
+            animationDampTime,
+            Time.deltaTime
+        );
     }
 }
