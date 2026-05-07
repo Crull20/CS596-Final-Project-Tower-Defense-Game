@@ -70,11 +70,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 759633186138449911, guid: df79a663deef47479a1a445b14cf8746, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -387.69577
+      value: -387
       objectReference: {fileID: 0}
     - target: {fileID: 759633186138449911, guid: df79a663deef47479a1a445b14cf8746, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 32.70883
+      value: 32.70874
       objectReference: {fileID: 0}
     - target: {fileID: 759633186138449911, guid: df79a663deef47479a1a445b14cf8746, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -92,15 +92,56 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 19.90398
       objectReference: {fileID: 0}
+    - target: {fileID: 1306382428000484459, guid: df79a663deef47479a1a445b14cf8746, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1974700656536596524, guid: df79a663deef47479a1a445b14cf8746, type: 3}
+      propertyPath: m_Colors.m_NormalColor.b
+      value: 0.6921283
+      objectReference: {fileID: 0}
+    - target: {fileID: 1974700656536596524, guid: df79a663deef47479a1a445b14cf8746, type: 3}
+      propertyPath: m_Colors.m_NormalColor.g
+      value: 0.8219977
+      objectReference: {fileID: 0}
+    - target: {fileID: 1974700656536596524, guid: df79a663deef47479a1a445b14cf8746, type: 3}
+      propertyPath: m_Colors.m_NormalColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1974700656536596524, guid: df79a663deef47479a1a445b14cf8746, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1974700656536596524, guid: df79a663deef47479a1a445b14cf8746, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ConfirmPlacement
+      objectReference: {fileID: 0}
+    - target: {fileID: 1974700656536596524, guid: df79a663deef47479a1a445b14cf8746, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TowerPlacementManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 8895661113727333127, guid: df79a663deef47479a1a445b14cf8746, type: 3}
       propertyPath: m_text
       value: CONFIRM
       objectReference: {fileID: 0}
+    - target: {fileID: 8895661113727333127, guid: df79a663deef47479a1a445b14cf8746, type: 3}
+      propertyPath: m_margin.x
+      value: -27.946907
+      objectReference: {fileID: 0}
+    - target: {fileID: 8895661113727333127, guid: df79a663deef47479a1a445b14cf8746, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 0fd4e73508e2efb4691adc65881b0118, type: 2}
+    - target: {fileID: 8895661113727333127, guid: df79a663deef47479a1a445b14cf8746, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -1266640059738766453, guid: 0fd4e73508e2efb4691adc65881b0118, type: 2}
     - target: {fileID: 8896665173241129121, guid: df79a663deef47479a1a445b14cf8746, type: 3}
       propertyPath: m_Name
       value: CancelTower Variant
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7172107109732366434, guid: df79a663deef47479a1a445b14cf8746, type: 3}
     m_RemovedGameObjects:
     - {fileID: 6737402074460093834, guid: df79a663deef47479a1a445b14cf8746, type: 3}
     m_AddedGameObjects: []

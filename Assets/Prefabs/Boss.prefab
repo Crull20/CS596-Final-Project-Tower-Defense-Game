@@ -385,7 +385,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2.8
   currentPath: {fileID: 0}
-  maxHealth: 30
+  maxHealth: 10
   deathHandled: 0
 --- !u!1001 &334292072443953029
 PrefabInstance:
