@@ -6,6 +6,7 @@ public class ObjectPooler : MonoBehaviour
     [SerializeField] private GameObject prefab;
     [SerializeField] private int poolSize = 10;
     [SerializeField] private HealthBar healthBar;
+    [SerializeField] private CoinCounter coinCounter;
 
     public Path pathToAssign;
     private List<GameObject> pool;
@@ -27,6 +28,12 @@ public class ObjectPooler : MonoBehaviour
         enemy.currentPath = pathToAssign;
         enemy.SetHealthBar(healthBar);
 
+        if (coinCounter != null)
+        {
+            enemy.OnDeath -= coinCounter.OnDeath;
+            enemy.OnDeath += coinCounter.OnDeath;
+        }
+
         newObj.SetActive(false);
         pool.Add(newObj);
         return newObj;
@@ -41,6 +48,13 @@ public class ObjectPooler : MonoBehaviour
                 Enemy enemy = obj.GetComponent<Enemy>();
                 enemy.currentPath = pathToAssign;
                 enemy.SetHealthBar(healthBar);
+
+                if (coinCounter != null)
+                {
+                    enemy.OnDeath -= coinCounter.OnDeath;
+                    enemy.OnDeath += coinCounter.OnDeath;
+                }
+
                 return obj;
             }
         }
