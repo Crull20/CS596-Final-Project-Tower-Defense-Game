@@ -8,12 +8,14 @@ public class PlaceableTower : MonoBehaviour
     [SerializeField] private Renderer[] renderers;
     [SerializeField] private TowerRangeIndicator rangeIndicator;
 
-    [Header("Preview Look")]
-    [SerializeField] private Color previewColor = new Color(0f, 1f, 0f, 0.6f);
-    [SerializeField] private Color blockedColor = new Color(1f, 0f, 0f, 0.6f);
+    [Header("Preview Material")]
+    [SerializeField] private Material previewMaterialTemplate;
 
-    private MaterialPropertyBlock propertyBlock;
+    private Material runtimePreviewMaterial;
+    private Material[][] originalMaterials;
     private bool isPreview;
+
+    private static readonly int PlacementValidId = Shader.PropertyToID("_PlacementValid");
 
     private void Awake()
     {
@@ -32,7 +34,18 @@ public class PlaceableTower : MonoBehaviour
         if (rangeIndicator == null)
             rangeIndicator = GetComponentInChildren<TowerRangeIndicator>(true);
 
-        propertyBlock = new MaterialPropertyBlock();
+        CacheOriginalMaterials();
+    }
+
+    private void CacheOriginalMaterials()
+    {
+        originalMaterials = new Material[renderers.Length][];
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            if (renderers[i] != null)
+                originalMaterials[i] = renderers[i].sharedMaterials;
+        }
     }
 
     public void SetPreviewMode(bool preview)
@@ -60,29 +73,62 @@ public class PlaceableTower : MonoBehaviour
             rangeIndicator.SetVisible(preview);
         }
 
-        SetPreviewVisual(previewColor);
+        if (preview)
+        {
+            ApplyPreviewMaterial();
+            SetPlacementValid(true);
+        }
+        else
+        {
+            RestoreOriginalMaterials();
+        }
     }
 
     public void SetPlacementValid(bool valid)
     {
-        if (!isPreview)
+        if (!isPreview || runtimePreviewMaterial == null)
             return;
 
-        SetPreviewVisual(valid ? previewColor : blockedColor);
+        runtimePreviewMaterial.SetFloat(PlacementValidId, valid ? 1f : 0f);
     }
 
-    private void SetPreviewVisual(Color color)
+    private void ApplyPreviewMaterial()
+    {
+        if (previewMaterialTemplate == null)
+        {
+            Debug.LogWarning("PlaceableTower: Preview Material Template is not assigned.");
+            return;
+        }
+
+        if (runtimePreviewMaterial == null)
+            runtimePreviewMaterial = new Material(previewMaterialTemplate);
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            if (renderers[i] == null)
+                continue;
+
+            Material[] mats = new Material[renderers[i].sharedMaterials.Length];
+
+            for (int j = 0; j < mats.Length; j++)
+                mats[j] = runtimePreviewMaterial;
+
+            renderers[i].materials = mats;
+        }
+    }
+
+    private void RestoreOriginalMaterials()
     {
         for (int i = 0; i < renderers.Length; i++)
         {
-            Renderer r = renderers[i];
-            if (r == null)
-                continue;
+            if (renderers[i] != null && originalMaterials[i] != null)
+                renderers[i].sharedMaterials = originalMaterials[i];
+        }
 
-            r.GetPropertyBlock(propertyBlock);
-            propertyBlock.SetColor("_Color", color);
-            propertyBlock.SetColor("_BaseColor", color);
-            r.SetPropertyBlock(propertyBlock);
+        if (runtimePreviewMaterial != null)
+        {
+            Destroy(runtimePreviewMaterial);
+            runtimePreviewMaterial = null;
         }
     }
 }
