@@ -5,30 +5,45 @@ using UnityEngine.SceneManagement;
 public class HealthBar : MonoBehaviour
 {
     [Header("Inscribed")]
-    public float maxHealth = 100f;
-    public float drainAnimSpeed = 2f;
+    [SerializeField] private float maxHealth = 100f;
+    [SerializeField] private float drainAnimSpeed = 2f;
 
     [Header("UI Elements")]
-    public Image healthBar;
+    [SerializeField] private Image healthBar;
 
-    private float currentHealth = 100f;
-    void Start()
+    private float currentHealth;
+
+    private void Start()
     {
-        healthBar ??= GameObject.Find("FillHealth").GetComponent<Image>();
         currentHealth = maxHealth;
+
+        if (healthBar == null)
+        {
+            Debug.LogError("HealthBar: Fill Image is not assigned in the Inspector.");
+            enabled = false;
+            return;
+        }
+
+        healthBar.fillAmount = 1f;
     }
 
-    void Update()
+    private void Update()
     {
-        // Change fill amount to reflect how much health the player has
-        healthBar.fillAmount = Mathf.Lerp(healthBar.fillAmount, currentHealth / maxHealth, Time.deltaTime * drainAnimSpeed);
-        if (currentHealth <= 0f) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Restart the round
+        healthBar.fillAmount = Mathf.Lerp(
+            healthBar.fillAmount,
+            currentHealth / maxHealth,
+            Time.deltaTime * drainAnimSpeed
+        );
+
+        if (currentHealth <= 0f)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void DrainHealth(float damage)
     {
-        // Subtract the damage from the player's health and clamp it between 0 and the max health
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+        Debug.Log($"Base took {damage} damage. Current health: {currentHealth}/{maxHealth}");
     }
 }
