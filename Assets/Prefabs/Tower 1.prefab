@@ -474,8 +474,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackRadius: 8
-  shotsPerSecond: 1
-  projectileDamage: 5
+  shotsPerSecond: 0.5
+  projectileDamage: 2
   projectilePrefab: {fileID: 8916938019070976063, guid: 0d64d85ba31c742eb956d2c3c73f124c, type: 3}
   projectileSpawnPoint: {fileID: 1073584809241429321}
   audioSource: {fileID: 8611594525788405060}
