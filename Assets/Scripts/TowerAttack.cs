@@ -14,6 +14,11 @@ public class TowerAttack : MonoBehaviour
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform projectileSpawnPoint;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip shootClip;
+    [SerializeField][Range(0f, 1f)] private float shootVolume = 1f;
+
     [Header("Optional Rotation")]
     [SerializeField] private Transform turretHead;
     [SerializeField] private float turnSpeed = 10f;
@@ -35,6 +40,9 @@ public class TowerAttack : MonoBehaviour
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
         rb.useGravity = false;
+
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
     }
 
     private void OnValidate()
@@ -101,6 +109,14 @@ public class TowerAttack : MonoBehaviour
         {
             Debug.LogWarning("Tower projectile prefab is missing a Projectile component.");
         }
+
+        PlayShootSound();
+    }
+
+    private void PlayShootSound()
+    {
+        if (audioSource != null && shootClip != null)
+            audioSource.PlayOneShot(shootClip, shootVolume);
     }
 
     private void OnTriggerEnter(Collider other)

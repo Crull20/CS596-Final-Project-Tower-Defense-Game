@@ -478,6 +478,9 @@ MonoBehaviour:
   projectileDamage: 5
   projectilePrefab: {fileID: 8916938019070976063, guid: 0d64d85ba31c742eb956d2c3c73f124c, type: 3}
   projectileSpawnPoint: {fileID: 1073584809241429321}
+  audioSource: {fileID: 8611594525788405060}
+  shootClip: {fileID: 8300000, guid: 5f9dd038566fa4e8fa5b326537db2517, type: 3}
+  shootVolume: 0.254
   turretHead: {fileID: 8847074847041623233}
   turnSpeed: 10
 --- !u!114 &6287548856473409383
@@ -555,7 +558,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0.75
       inSlope: 0
       outSlope: 0
       tangentMode: 0
