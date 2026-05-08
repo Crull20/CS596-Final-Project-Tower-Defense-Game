@@ -455,6 +455,17 @@ Transform:
   - {fileID: 870224936}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &201983609 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2604434754596391243, guid: 21c2ea0d1ef1ebd118c18882b11bfb1a, type: 3}
+  m_PrefabInstance: {fileID: 1640477413737930528}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &329718336 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7558877368554585560, guid: ba19364686ee40abc8714d0c8dbff920, type: 3}
@@ -3925,6 +3936,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 6875437732608981712, guid: 1d5eaed64f41b544489f21a3647a42b7, type: 3}
   poolSize: 10
+  healthBar: {fileID: 1640477413737930530}
   pathToAssign: {fileID: 434942714}
 --- !u!4 &2127370361
 Transform:
@@ -4371,8 +4383,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  drainAnimSpeed: 2
-  healthBar: {fileID: 0}
+  drainAnimSpeed: 20
+  healthBar: {fileID: 201983609}
 --- !u!114 &1914250222053976156 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1974700656536596524, guid: df79a663deef47479a1a445b14cf8746, type: 3}
