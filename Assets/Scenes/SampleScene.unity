@@ -4235,6 +4235,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7124901468432737891, guid: 0bad46aa63ab937c4b38993ac5f9d069, type: 3}
+      propertyPath: bossCoinReward
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7124901468432737891, guid: 0bad46aa63ab937c4b38993ac5f9d069, type: 3}
+      propertyPath: enemyCoinReward
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
