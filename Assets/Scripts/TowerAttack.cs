@@ -25,14 +25,17 @@ public class TowerAttack : MonoBehaviour
 
     public float AttackRadius => attackRadius;
 
+    // tracks enemies inside the towers attack range
     private readonly List<Enemy> enemiesInRange = new List<Enemy>();
 
+    // stores current target and attack timing
     private Enemy currentTarget;
     private float attackTimer;
     private SphereCollider rangeCollider;
 
     private void Awake()
     {
+        // sets up the tower's trigger range and physics.
         rangeCollider = GetComponent<SphereCollider>();
         rangeCollider.isTrigger = true;
         rangeCollider.radius = attackRadius;
@@ -47,6 +50,7 @@ public class TowerAttack : MonoBehaviour
 
     private void OnValidate()
     {
+        // keeps the collider radius updated in the Inspector
         SphereCollider col = GetComponent<SphereCollider>();
         if (col != null)
         {
@@ -57,6 +61,7 @@ public class TowerAttack : MonoBehaviour
 
     private void Update()
     {
+        // updates targeting and fires when ready
         CleanupInvalidEnemies();
         SelectTarget();
 
@@ -78,6 +83,7 @@ public class TowerAttack : MonoBehaviour
 
     private void FireProjectile(Enemy target)
     {
+        // spawns and assigns a projectile to the current target.
         if (target == null || !target.IsAlive)
             return;
 
@@ -115,12 +121,14 @@ public class TowerAttack : MonoBehaviour
 
     private void PlayShootSound()
     {
+        // plays the tower shooting sound
         if (audioSource != null && shootClip != null)
             audioSource.PlayOneShot(shootClip, shootVolume);
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        // adds enemies when they enter attack range
         Enemy enemy = other.GetComponentInParent<Enemy>();
         if (enemy == null || enemiesInRange.Contains(enemy))
             return;
@@ -131,6 +139,7 @@ public class TowerAttack : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        // removes enemies when they leave attack range
         Enemy enemy = other.GetComponentInParent<Enemy>();
         if (enemy == null)
             return;
@@ -140,6 +149,7 @@ public class TowerAttack : MonoBehaviour
 
     private void OnEnemyUnavailable(Enemy enemy)
     {
+        // removes enemies that die or become unavailable
         RemoveEnemy(enemy);
     }
 
@@ -157,6 +167,7 @@ public class TowerAttack : MonoBehaviour
 
     private void CleanupInvalidEnemies()
     {
+        // removes dead missing or inactive enemies
         for (int i = enemiesInRange.Count - 1; i >= 0; i--)
         {
             Enemy enemy = enemiesInRange[i];
@@ -173,6 +184,7 @@ public class TowerAttack : MonoBehaviour
 
     private void SelectTarget()
     {
+        // selects first valid enemy in range
         if (currentTarget != null && currentTarget.IsAlive && currentTarget.gameObject.activeInHierarchy)
             return;
 
@@ -191,6 +203,7 @@ public class TowerAttack : MonoBehaviour
 
     private void RotateTowardTarget()
     {
+        // rotates the tower toward its current target
         Transform partToRotate = turretHead != null ? turretHead : transform;
 
         Vector3 direction = currentTarget.transform.position - partToRotate.position;
@@ -209,6 +222,7 @@ public class TowerAttack : MonoBehaviour
 
     private void OnDisable()
     {
+        // clears enemy tracking when the tower is disabled
         for (int i = 0; i < enemiesInRange.Count; i++)
         {
             if (enemiesInRange[i] != null)
@@ -221,6 +235,7 @@ public class TowerAttack : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        // draws the tower attack radius in the Scene view.
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRadius);
     }

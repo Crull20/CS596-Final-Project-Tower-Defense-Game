@@ -36,6 +36,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void Start()
     {
+        // sets up audio and hides weapon visuals at the start
         audioSource = GetComponent<AudioSource>();
 
         DisablePhysicsOnVisual(swordObject);
@@ -50,6 +51,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void Update()
     {
+        // attacks close enemies first, otherwise uses projectile range
         Enemy closeEnemy = FindNearestEnemy(swordRange);
 
         if (closeEnemy != null)
@@ -70,6 +72,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void FaceEnemy(Enemy enemy)
     {
+        // rotates the player toward the selected enemy
         if (enemy == null)
             return;
 
@@ -84,6 +87,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void TrySwordAttack(Enemy enemy)
     {
+        // damagesa nearby enemy if the sword cooldown is ready
         if (Time.time < nextSwordAttackTime)
             return;
 
@@ -104,6 +108,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void TryProjectileAttack(Enemy enemy)
     {
+        // fires a projectile at a farther enemy if cooldown and setup are ready
         if (Time.time < nextProjectileAttackTime)
             return;
 
@@ -144,6 +149,7 @@ public class PlayerAttack : MonoBehaviour
 
     private Enemy FindNearestEnemy(float range)
     {
+        // finds closest living enemy within the given range
         Collider[] hits = Physics.OverlapSphere(transform.position, range);
 
         Enemy nearest = null;
@@ -170,6 +176,7 @@ public class PlayerAttack : MonoBehaviour
 
     private IEnumerator SwingSword()
     {
+        // shows and rotates sword during the slash animation
         if (swordObject == null)
             yield break;
 
@@ -200,6 +207,7 @@ public class PlayerAttack : MonoBehaviour
 
     private IEnumerator ShowGun()
     {
+        // briefly shows the gun when firing a projectile
         if (gunObject == null)
             yield break;
 
@@ -210,6 +218,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void DisablePhysicsOnVisual(GameObject visualObject)
     {
+        // disables physics on weapon visuals so they do not affect gameplay
         if (visualObject == null)
             return;
 
@@ -229,6 +238,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        // draws attack range previews in the scene view
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, swordRange);
 

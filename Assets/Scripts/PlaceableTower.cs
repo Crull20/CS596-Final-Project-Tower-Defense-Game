@@ -11,6 +11,7 @@ public class PlaceableTower : MonoBehaviour
     [Header("Preview Material")]
     [SerializeField] private Material previewMaterialTemplate;
 
+    // stores preview materials and placement state
     private Material runtimePreviewMaterial;
     private Material[][] originalMaterials;
     private bool isPreview;
@@ -19,6 +20,7 @@ public class PlaceableTower : MonoBehaviour
 
     private void Awake()
     {
+        // find missing tower components automatically
         if (towerAttack == null)
             towerAttack = GetComponent<TowerAttack>();
 
@@ -39,6 +41,7 @@ public class PlaceableTower : MonoBehaviour
 
     private void CacheOriginalMaterials()
     {
+        // sasves the tower's original materials so they can be restored later
         originalMaterials = new Material[renderers.Length][];
 
         for (int i = 0; i < renderers.Length; i++)
@@ -50,6 +53,7 @@ public class PlaceableTower : MonoBehaviour
 
     public void SetPreviewMode(bool preview)
     {
+        // enables or disables placement preview behavior
         isPreview = preview;
 
         if (towerAttack != null)
@@ -86,6 +90,7 @@ public class PlaceableTower : MonoBehaviour
 
     public void SetPlacementValid(bool valid)
     {
+        // updates the preview material to show valid or invalid placement
         if (!isPreview || runtimePreviewMaterial == null)
             return;
 
@@ -94,6 +99,7 @@ public class PlaceableTower : MonoBehaviour
 
     private void ApplyPreviewMaterial()
     {
+        // applies the preview material to every tower renderer
         if (previewMaterialTemplate == null)
         {
             Debug.LogWarning("PlaceableTower: Preview Material Template is not assigned.");
@@ -119,6 +125,7 @@ public class PlaceableTower : MonoBehaviour
 
     private void RestoreOriginalMaterials()
     {
+        // restores the tower's normal materials after placement
         for (int i = 0; i < renderers.Length; i++)
         {
             if (renderers[i] != null && originalMaterials[i] != null)

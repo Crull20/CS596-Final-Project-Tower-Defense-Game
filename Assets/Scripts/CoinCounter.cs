@@ -30,11 +30,13 @@ public class CoinCounter : MonoBehaviour
 
     public int GetCoins()
     {
+        // allow other scripts to check how many coins player has
         return coins;
     }
 
     public void RemoveCoins(int amount)
     {
+        // used when spending coins, buying/placing towers
         coins -= amount;
     }
 }

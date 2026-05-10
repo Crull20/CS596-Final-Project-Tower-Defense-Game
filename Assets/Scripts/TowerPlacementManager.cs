@@ -17,20 +17,23 @@ public class TowerPlacementManager : MonoBehaviour
     [SerializeField] private LayerMask placementLayers;
     [SerializeField] private float yOffset = 0f;
 
-
+    // tracks tower inventory and current preview object
     private int towerCount;
     private GameObject previewInstance;
     private PlaceableTower previewTower;
     private GameObject pendingPrefab;
 
+    // tracks whether player is currently placing a tower
     private bool isPlacing;
     private bool hasValidPlacement;
 
+    // stores the latest valid placement position and touch finger
     private Vector3 lastValidPosition;
     private int placementFingerId = -1;
 
     private void Awake()
-    {
+    { 
+        // sets up the camera and hides placement buttons
         if (mainCamera == null)
             mainCamera = Camera.main;
 
@@ -45,6 +48,7 @@ public class TowerPlacementManager : MonoBehaviour
 
     private void Update()
     {
+        // updates tower preview while placement is active
         if (!isPlacing || previewInstance == null)
             return;
 
@@ -59,6 +63,7 @@ public class TowerPlacementManager : MonoBehaviour
 
     public void BeginPlacement(GameObject towerPrefab)
     {
+        // starts tower placement and creates a preview tower
         if (towerPrefab == null)
             return;
 
@@ -85,6 +90,7 @@ public class TowerPlacementManager : MonoBehaviour
 
     public void ConfirmPlacement()
     {
+        // places tower if preview position is valid
         if (!isPlacing || previewInstance == null || !hasValidPlacement)
             return;
 
@@ -106,6 +112,7 @@ public class TowerPlacementManager : MonoBehaviour
 
     public void CancelPlacement()
     {
+        // cancels placement and removes preview tower
         if (previewInstance != null)
             Destroy(previewInstance);
 
@@ -124,6 +131,7 @@ public class TowerPlacementManager : MonoBehaviour
 
     private void HandleTouchPlacement()
     {
+
         for (int i = 0; i < Input.touchCount; i++)
         {
             Touch touch = Input.GetTouch(i);
@@ -164,6 +172,7 @@ public class TowerPlacementManager : MonoBehaviour
 
     private void UpdatePreviewPosition(Vector2 screenPos)
     {
+        // moves preview tower to a valid placement surface
         if (mainCamera == null || previewInstance == null)
             return;
 
@@ -192,6 +201,7 @@ public class TowerPlacementManager : MonoBehaviour
 
     private bool IsPointerOverUI(Touch touch)
     {
+        // checks if placement touch is over UI
         if (EventSystem.current == null)
             return false;
 
@@ -200,6 +210,7 @@ public class TowerPlacementManager : MonoBehaviour
 
     private void SetPlacementButtonsVisible(bool visible)
     {
+        // shows or hides placement confirm and cancel buttons
         if (confirmButton != null)
             confirmButton.gameObject.SetActive(visible);
 

@@ -1717,8 +1717,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1138025193}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15212342, y: -0.000000015258182, z: 0.0000000023484592, w: 0.98836154}
-  m_LocalPosition: {x: 0, y: 4.706352, z: -8.583452}
+  m_LocalRotation: {x: 0.2258636, y: 5.589254e-16, z: -1.1604214e-16, w: 0.97415894}
+  m_LocalPosition: {x: 0, y: 6.206352, z: -8.583452}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1736,7 +1736,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b5d7c088409d9a40b7b09aa707777f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetOffset: {x: 0, y: 0, z: 0}
+  TargetOffset: {x: 0, y: 1.5, z: 0}
   TrackerSettings:
     BindingMode: 4
     PositionDamping: {x: 1, y: 1, z: 1}
@@ -2996,8 +2996,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1703982772}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15212342, y: -0.000000015258182, z: 0.0000000023484592, w: 0.98836154}
-  m_LocalPosition: {x: 0, y: 4.706352, z: -8.583452}
+  m_LocalRotation: {x: 0.2258636, y: 5.6224485e-16, z: -1.3035928e-16, w: 0.97415894}
+  m_LocalPosition: {x: 0, y: 6.206352, z: -8.583452}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3937,6 +3937,7 @@ MonoBehaviour:
   prefab: {fileID: 6875437732608981712, guid: 1d5eaed64f41b544489f21a3647a42b7, type: 3}
   poolSize: 10
   healthBar: {fileID: 1640477413737930530}
+  coinCounter: {fileID: 358058029}
   pathToAssign: {fileID: 434942714}
 --- !u!4 &2127370361
 Transform:
