@@ -1,6 +1,10 @@
 # Final Project - SIEGE
 San Diego State University CS 596 Advanced 3D Game Programming 
 <br />
+
+## LINK TO FINAL VIDEO
+https://drive.google.com/file/d/1ZTnvRxrOOqezrtqD-_z4D6Tb6GsZklZv/view
+
 ## *SIEGE*
 ### Game Description
 The game "SEIGE" is a 3D tower defense game built for mobile devices. Our group aims to create a unique spin on the tower defense formula by adding a playable character that interacts with the environment. Instead of having the player create towers anywhere throughout the map, the player places towers down through their movable character on the map. Furthermore, this playable character is able to attack the units themselves. We also wanted to play with the idea of this character having special abilities but we are unsure if it is within the scope of our project. This added implementation creates a challenging aspect to the game that keeps the player more engaged since players are actively controlling a character rather than simply watching their units.
